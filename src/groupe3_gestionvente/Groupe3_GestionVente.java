@@ -4,6 +4,9 @@
  */
 package groupe3_gestionvente;
 
+import InterfaceIHM.MainFrame;
+import InterfaceIHM.InterfaceClient;
+
 /**
  *
  * @author Héloïse
@@ -15,6 +18,11 @@ public class Groupe3_GestionVente {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        MainFrame app = new MainFrame();
+        InterfaceClient intClient = new InterfaceClient();
+        app.add(intClient);
+        app.setVisible(true);
+        
     }
     
 }
