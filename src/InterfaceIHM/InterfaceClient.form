@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -23,38 +23,39 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="panelPrincipal" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="13" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="panelPrincipal">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelPrincipal.setBackground(Color.WHITE);"/>
+      </AuxValues>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                  <Component id="panelCategorie" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="118" max="32767" attributes="0"/>
+                  <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelLogoSearchBar" alignment="0" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                          <Component id="panelCategorie" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="37" max="32767" attributes="0"/>
-                          <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+              </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="panelLogoSearchBar" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
                   <Component id="panelLogoSearchBar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="12" max="32767" attributes="0"/>
+                  <EmptySpace pref="124" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="panelCategorie" max="32767" attributes="0"/>
                       <Component id="jPanel4" max="32767" attributes="0"/>
@@ -72,6 +73,8 @@
             </Property>
           </Properties>
           <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(new BorderLayout(20, 0))"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="panelLogoSearchBar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelLogoSearchBar.setOpaque(false);"/>
           </AuxValues>
 
@@ -79,23 +82,32 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="panelLogo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="searchBar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="panelPanierUser" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                          <Component id="searchBar" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                              <Component id="panelPanierUser" min="-2" pref="49" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="panelLogo" min="-2" max="-2" attributes="0"/>
+                                  <Component id="searchBar" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="88" max="32767" attributes="0"/>
+                      <EmptySpace pref="21" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -103,12 +115,14 @@
           <SubComponents>
             <Container class="javax.swing.JPanel" name="searchBar">
               <Properties>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="f2" green="f2" red="f2" type="rgb"/>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Color.BLACK" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new CustumizedRoundedPanel(18, 18, 18, 18, new Color(0,0,0))"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new CustumizedRoundedPanel(40, 40, 40, 40, new Color(241, 243, 244))"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="panelLogoSearchBar.add(searchBar, BorderLayout.CENTER);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="searchBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));&#xa;searchBar.setOpaque(false);"/>
               </AuxValues>
 
               <Layout>
@@ -116,22 +130,22 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="searchText" min="-2" pref="372" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="searchText" min="-2" pref="336" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btnSearch" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="searchText" max="32767" attributes="0"/>
-                              <Component id="jButton1" pref="49" max="32767" attributes="0"/>
-                          </Group>
+                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="btnSearch" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                              <Component id="searchText" alignment="3" min="-2" pref="36" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -139,10 +153,10 @@
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="searchText">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="f2" green="f2" red="f2" type="rgb"/>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new Color(141, 143, 144)" type="code"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Rechercher..."/>
+                    <Property name="text" type="java.lang.String" value="Rechercher..." postCode="searchText.setOpaque(false);"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="null"/>
                     </Property>
@@ -151,35 +165,91 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchTextActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="searchText.setForeground(new Color(160, 160, 160));"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="searchText.setFont( new Font(&quot;Segoe UI&quot;, Font.PLAIN, 16));"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JButton" name="jButton1">
+                <Component class="javax.swing.JButton" name="btnSearch">
                   <Properties>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor" postCode="btnSearch.setIcon(imageIcon);">
                       <Color blue="f2" green="f2" red="f2" type="rgb"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="jButton1"/>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="null" type="code"/>
+                    </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="java.net.URL imageURL = getClass().getResource(&quot;./ressources/images/searchIcon.png&quot;);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnSearch.setFocusPainted(false);&#xa;btnSearch.setOpaque(false);&#xa;btnSearch.setContentAreaFilled(false);&#xa;btnSearch.setBorderPainted(false);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ImageIcon imageIcon = new ImageIcon(imageURL);&#xa;Image image = imageIcon.getImage();&#xa;Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);&#xa;imageIcon = new ImageIcon(newImg);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JPanel" name="jPanel2">
+            <Container class="javax.swing.JPanel" name="panelPanierUser">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="ff" red="cc" type="rgb"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="new java.awt.Color(0, 0,0 )" type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="panelLogoSearchBar.add(panelPanierUser, BorderLayout.EAST);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelPanierUser.setOpaque(false);"/>
+              </AuxValues>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JToggleButton" name="btnPanier">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="null" type="code"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPanierActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="java.net.URL  panierUrl = getClass().getResource(&quot;./ressources/images/panierIcon.png&quot;);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnPanier.setIcon(panierIcon);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ImageIcon panierIcon = new ImageIcon(panierUrl);&#xa;Image panierImage = panierIcon.getImage();&#xa;Image newImage = panierImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);&#xa;panierIcon = new ImageIcon(newImage);"/>
+                    <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="btnPanier.setBorderPainted(false);&#xa;btnPanier.setOpaque(false);&#xa;btnPanier.setBorderPainted(false);&#xa;btnPanier.setContentAreaFilled(false);&#xa;btnPanier.setFocusPainted(false);"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JToggleButton" name="btnUser">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="null" type="code"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUserActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="btnUser.setFocusPainted(false);&#xa;btnUser.setOpaque(false);&#xa;btnUser.setContentAreaFilled(false);&#xa;btnUser.setBorderPainted(false);"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="java.net.URL  userUrl = getClass().getResource(&quot;./ressources/images/userIcon.png&quot;);&#xa;ImageIcon userIcon = new ImageIcon(userUrl);&#xa;Image userImage = userIcon.getImage();&#xa;Image newUser = userImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);&#xa;userIcon = new ImageIcon(newUser);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="btnUser.setIcon(userIcon);"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="panelLogo">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="java.net.URL logoUrl = getClass().getResource(&quot;./ressources/images/logo.png&quot;);&#xa;ImageIcon logoIcon = new ImageIcon (logoUrl);&#xa;JLabel labelLogo = new JLabel();&#xa;labelLogo.setIcon(logoIcon);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelLogo.add(labelLogo);"/>
+                <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="panelLogoSearchBar.add(panelLogo, BorderLayout.WEST);"/>
+              </AuxValues>
 
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="180" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="61" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="50" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="64" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -187,24 +257,45 @@
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="panelCategorie">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="66" red="66" type="rgb"/>
-            </Property>
-          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelCategorie.setLayout(new BoxLayout(panelCategorie,BoxLayout.Y_AXIS));"/>
+            <AuxValue name="JavaCodeGenerator_LayoutCodePre" type="java.lang.String" value="panelCategorie.setOpaque(false);"/>
+          </AuxValues>
 
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="320" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <Component id="labelCategorie" min="-2" pref="251" max="-2" attributes="0"/>
+                      <EmptySpace pref="47" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="358" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <Component id="labelCategorie" min="-2" pref="24" max="-2" attributes="0"/>
+                      <EmptySpace pref="373" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="labelCategorie">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;Cat&#xe9;gorie&quot;" type="code"/>
+                </Property>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="Font poppinsBold;&#xa;&#xa;        try {&#xa;            InputStream is = getClass().getResourceAsStream(&quot;./ressources/fonts/Bungee-Regular.ttf&quot;);&#xa;            poppinsBold = Font.createFont(Font.TRUETYPE_FONT, is);&#xa;&#xa;            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();&#xa;            ge.registerFont(poppinsBold);&#xa;&#xa;        } catch (Exception e) {&#xa;            e.printStackTrace();&#xa;            poppinsBold = new Font(&quot;SansSerif&quot;, Font.BOLD, 18);&#xa;        }&#xa;        &#xa;Map&lt;TextAttribute, Object&gt; attributes = new HashMap&lt;TextAttribute, Object&gt;();&#xa;attributes.put(TextAttribute.TRACKING, -0.04f); &#xa;Font fontResserree = poppinsBold.deriveFont(attributes);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="labelCategorie.setFont(fontResserree.deriveFont(20f));"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
           <Properties>

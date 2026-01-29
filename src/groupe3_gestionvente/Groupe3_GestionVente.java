@@ -6,6 +6,7 @@ package groupe3_gestionvente;
 
 import InterfaceIHM.MainFrame;
 import InterfaceIHM.InterfaceClient;
+import InterfaceIHM.FormAddFournisseur;
 
 /**
  *
@@ -20,7 +21,8 @@ public class Groupe3_GestionVente {
         // TODO code application logic here
         MainFrame app = new MainFrame();
         InterfaceClient intClient = new InterfaceClient();
-        app.add(intClient);
+        FormAddFournisseur formFournisseur = new FormAddFournisseur();
+        app.add(formFournisseur.getPanelPrincipal());
         app.setVisible(true);
         
     }

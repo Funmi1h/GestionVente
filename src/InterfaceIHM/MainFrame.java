@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package InterfaceIHM;
-
+import java.awt.*;
 import java.awt.CardLayout;
 import javax.swing.*;
 
@@ -16,11 +16,15 @@ public class MainFrame extends JFrame{
     private JPanel container;
     public MainFrame(){
         super("Notre Frame");
+        this.getContentPane().setBackground(Color.WHITE);
         this.setSize(800, 600);
         setLocationRelativeTo(null);
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
         this.add(container);
+        
+        
+        
         
     }
     public void afficher(JPanel j){

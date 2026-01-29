@@ -4,6 +4,16 @@
  */
 package InterfaceIHM;
 import java.awt.*;
+import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import java.awt.Image;
+import java.io.InputStream;
+import javax.swing.ImageIcon;
+import java.awt.font.TextAttribute;
+import java.awt.geom.AffineTransform;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  *
@@ -28,27 +38,76 @@ public class InterfaceClient extends javax.swing.JPanel {
     private void initComponents() {
 
         panelPrincipal = new javax.swing.JPanel();
-        panelLogoSearchBar = new javax.swing.JPanel();
-        searchBar = new CustumizedRoundedPanel(18, 18, 18, 18, new Color(0,0,0));
+        panelLogoSearchBar = new javax.swing.JPanel(new BorderLayout(20, 0));
+        searchBar = new CustumizedRoundedPanel(40, 40, 40, 40, new Color(241, 243, 244));
         searchText = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jPanel2 = new javax.swing.JPanel();
+        java.net.URL imageURL = getClass().getResource("./ressources/images/searchIcon.png");
+        btnSearch = new javax.swing.JButton();
+        panelPanierUser = new javax.swing.JPanel();
+        java.net.URL  panierUrl = getClass().getResource("./ressources/images/panierIcon.png");
+        btnPanier = new javax.swing.JToggleButton();
+        java.net.URL  userUrl = getClass().getResource("./ressources/images/userIcon.png");
+        ImageIcon userIcon = new ImageIcon(userUrl);
+        Image userImage = userIcon.getImage();
+        Image newUser = userImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        userIcon = new ImageIcon(newUser);
+        btnUser = new javax.swing.JToggleButton();
+        java.net.URL logoUrl = getClass().getResource("./ressources/images/logo.png");
+        ImageIcon logoIcon = new ImageIcon (logoUrl);
+        JLabel labelLogo = new JLabel();
+        labelLogo.setIcon(logoIcon);
+        panelLogo = new javax.swing.JPanel();
         panelCategorie = new javax.swing.JPanel();
+        Font poppinsBold;
+
+        try {
+            InputStream is = getClass().getResourceAsStream("./ressources/fonts/Bungee-Regular.ttf");
+            poppinsBold = Font.createFont(Font.TRUETYPE_FONT, is);
+
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(poppinsBold);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            poppinsBold = new Font("SansSerif", Font.BOLD, 18);
+        }
+
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>();
+        attributes.put(TextAttribute.TRACKING, -0.04f);
+        Font fontResserree = poppinsBold.deriveFont(attributes);
+        labelCategorie = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
+
+        panelPrincipal.setBackground(Color.WHITE);
 
         panelLogoSearchBar.setOpaque(false);
         panelLogoSearchBar.setForeground(new java.awt.Color(242, 242, 242));
+        panelLogoSearchBar.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        searchBar.setForeground(new java.awt.Color(242, 242, 242));
+        searchBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        searchBar.setOpaque(false);
+        searchBar.setForeground(Color.BLACK);
+        panelLogoSearchBar.add(searchBar, BorderLayout.CENTER);
 
-        searchText.setForeground(new Color(160, 160, 160));
-        searchText.setForeground(new java.awt.Color(242, 242, 242));
+        searchText.setFont( new Font("Segoe UI", Font.PLAIN, 16));
+        searchText.setForeground(new Color(141, 143, 144));
         searchText.setText("Rechercher...");
+        searchText.setOpaque(false);
         searchText.setBorder(null);
         searchText.addActionListener(this::searchTextActionPerformed);
 
-        jButton1.setForeground(new java.awt.Color(242, 242, 242));
-        jButton1.setText("jButton1");
+        ImageIcon imageIcon = new ImageIcon(imageURL);
+        Image image = imageIcon.getImage();
+        Image newImg = image.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        imageIcon = new ImageIcon(newImg);
+        btnSearch.setForeground(new java.awt.Color(242, 242, 242));
+        btnSearch.setIcon(imageIcon);
+        btnSearch.setText(null);
+        btnSearch.setFocusPainted(false);
+        btnSearch.setOpaque(false);
+        btnSearch.setContentAreaFilled(false);
+        btnSearch.setBorderPainted(false);
+        btnSearch.addActionListener(this::btnSearchActionPerformed);
 
         javax.swing.GroupLayout searchBarLayout = new javax.swing.GroupLayout(searchBar);
         searchBar.setLayout(searchBarLayout);
@@ -56,32 +115,61 @@ public class InterfaceClient extends javax.swing.JPanel {
             searchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(searchBarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 336, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSearch)
+                .addContainerGap())
         );
         searchBarLayout.setVerticalGroup(
             searchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchBarLayout.createSequentialGroup()
+            .addGroup(searchBarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(searchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchText)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(searchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBackground(new java.awt.Color(204, 255, 0));
+        panelPanierUser.setOpaque(false);
+        panelPanierUser.setBackground(new java.awt.Color(0, 0,0 ));
+        panelLogoSearchBar.add(panelPanierUser, BorderLayout.EAST);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 180, Short.MAX_VALUE)
+        ImageIcon panierIcon = new ImageIcon(panierUrl);
+        Image panierImage = panierIcon.getImage();
+        Image newImage = panierImage.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        panierIcon = new ImageIcon(newImage);
+        btnPanier.setText(null);
+        btnPanier.setIcon(panierIcon);
+        btnPanier.addActionListener(this::btnPanierActionPerformed);
+        btnPanier.setBorderPainted(false);
+        btnPanier.setOpaque(false);
+        btnPanier.setBorderPainted(false);
+        btnPanier.setContentAreaFilled(false);
+        btnPanier.setFocusPainted(false);
+        panelPanierUser.add(btnPanier);
+
+        btnUser.setText(null);
+        btnUser.setIcon(userIcon);
+        btnUser.addActionListener(this::btnUserActionPerformed);
+        panelPanierUser.add(btnUser);
+        btnUser.setFocusPainted(false);
+        btnUser.setOpaque(false);
+        btnUser.setContentAreaFilled(false);
+        btnUser.setBorderPainted(false);
+
+        panelLogo.add(labelLogo);
+
+        panelLogoSearchBar.add(panelLogo, BorderLayout.WEST);
+
+        javax.swing.GroupLayout panelLogoLayout = new javax.swing.GroupLayout(panelLogo);
+        panelLogo.setLayout(panelLogoLayout);
+        panelLogoLayout.setHorizontalGroup(
+            panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 61, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 50, Short.MAX_VALUE)
+        panelLogoLayout.setVerticalGroup(
+            panelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 64, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout panelLogoSearchBarLayout = new javax.swing.GroupLayout(panelLogoSearchBar);
@@ -89,33 +177,50 @@ public class InterfaceClient extends javax.swing.JPanel {
         panelLogoSearchBarLayout.setHorizontalGroup(
             panelLogoSearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLogoSearchBarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
                 .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelPanierUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(89, 89, 89))
         );
         panelLogoSearchBarLayout.setVerticalGroup(
             panelLogoSearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLogoSearchBarLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(panelLogoSearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addGroup(panelLogoSearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLogoSearchBarLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(panelPanierUser, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelLogoSearchBarLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(panelLogoSearchBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(panelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(searchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        panelCategorie.setBackground(new java.awt.Color(102, 102, 255));
+        panelCategorie.setLayout(new BoxLayout(panelCategorie,BoxLayout.Y_AXIS));
+
+        labelCategorie.setText("Catégorie");
+        labelCategorie.setFont(fontResserree.deriveFont(20f));
+
+        panelCategorie.setOpaque(false);
 
         javax.swing.GroupLayout panelCategorieLayout = new javax.swing.GroupLayout(panelCategorie);
         panelCategorie.setLayout(panelCategorieLayout);
         panelCategorieLayout.setHorizontalGroup(
             panelCategorieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 320, Short.MAX_VALUE)
+            .addGroup(panelCategorieLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         panelCategorieLayout.setVerticalGroup(
             panelCategorieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 358, Short.MAX_VALUE)
+            .addGroup(panelCategorieLayout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(labelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(373, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 51, 204));
@@ -136,22 +241,21 @@ public class InterfaceClient extends javax.swing.JPanel {
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
+                .addGap(41, 41, 41)
+                .addComponent(panelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLogoSearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panelPrincipalLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(panelCategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addComponent(panelLogoSearchBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelPrincipalLayout.createSequentialGroup()
-                .addGap(54, 54, 54)
                 .addComponent(panelLogoSearchBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
                 .addGroup(panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelCategorie, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -168,7 +272,7 @@ public class InterfaceClient extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -176,13 +280,29 @@ public class InterfaceClient extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_searchTextActionPerformed
 
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnPanierActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPanierActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPanierActionPerformed
+
+    private void btnUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUserActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JToggleButton btnPanier;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JToggleButton btnUser;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel labelCategorie;
     private javax.swing.JPanel panelCategorie;
+    private javax.swing.JPanel panelLogo;
     private javax.swing.JPanel panelLogoSearchBar;
+    private javax.swing.JPanel panelPanierUser;
     private javax.swing.JPanel panelPrincipal;
     private javax.swing.JPanel searchBar;
     private javax.swing.JTextField searchText;
