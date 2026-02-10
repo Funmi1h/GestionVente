@@ -79,8 +79,9 @@ public class ArticleDAO {
                 article.setNom(resReq.getString(2));
                 article.setPrix(resReq.getFloat(3));
                 article.setStock(resReq.getInt(4));
-                article.setCreatedAt(resReq.getString(5));
-                article.setUpdatedAt(resReq.getString(6));
+                article.setUrlPhoto(resReq.getString("url_photo"));
+                article.setCreatedAt(resReq.getString(6));
+                article.setUpdatedAt(resReq.getString(7));
                 
                 /*System.out.println(resReq.getInt(1));
                 System.out.println(resReq.getString(2));
