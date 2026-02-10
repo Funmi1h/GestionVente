@@ -4,11 +4,17 @@
  */
 package groupe3_gestionvente;
 
+<<<<<<< HEAD
 import DAO.*;
 import Metier.*;
 import Modeles.*;
 import java.sql.Connection;
 import java.util.*;
+=======
+import InterfaceIHM.MainFrame;
+import InterfaceIHM.InterfaceClient;
+import InterfaceIHM.FormAddFournisseur;
+>>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
 
 /**
  *
@@ -21,6 +27,7 @@ public class Groupe3_GestionVente {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+<<<<<<< HEAD
         //ConnexionDB.connect();
         
         System.out.println("=== Zone de test ===\n");
@@ -170,6 +177,13 @@ public class Groupe3_GestionVente {
         System.out.println("Chiffre d'affaires: " + stats.get("chiffreAffaires") + " FCFA");
 
 */
+=======
+        MainFrame app = new MainFrame();
+        InterfaceClient intClient = new InterfaceClient();
+        FormAddFournisseur formFournisseur = new FormAddFournisseur();
+        app.add(formFournisseur.getPanelPrincipal());
+        app.setVisible(true);
+>>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
         
     }
     
