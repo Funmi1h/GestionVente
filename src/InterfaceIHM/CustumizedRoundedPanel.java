@@ -59,4 +59,16 @@ public class CustumizedRoundedPanel extends JPanel {
        
    }
     
+   
+   @Override
+    public Insets getInsets() {
+        int shadowSize = 8;
+        return new Insets(
+            shadowSize,
+            shadowSize,
+            shadowSize,
+            shadowSize
+        );
+    }
+
 }

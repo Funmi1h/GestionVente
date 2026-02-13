@@ -6,7 +6,10 @@ package groupe3_gestionvente;
 
 import InterfaceIHM.MainFrame;
 import InterfaceIHM.InterfaceClient;
-import InterfaceIHM.FormAddFournisseur;
+import InterfaceIHM.FormInscription;
+import InterfaceIHM.FormulaireConnexion;
+import InterfaceIHM.AdminForm;
+import javax.swing.*;
 
 /**
  *
@@ -20,9 +23,19 @@ public class Groupe3_GestionVente {
     public static void main(String[] args) {
         // TODO code application logic here
         MainFrame app = new MainFrame();
+        JPanel container = app.getContainer();
+        
+        
         InterfaceClient intClient = new InterfaceClient();
-        FormAddFournisseur formFournisseur = new FormAddFournisseur();
-        app.add(formFournisseur.getPanelPrincipal());
+        FormInscription formInscription = new FormInscription();
+        FormulaireConnexion formConnexion = new FormulaireConnexion();
+        AdminForm formAdmin = new AdminForm();
+        
+        container.add(formAdmin.getPanelPrincipal());
+        
+        //container.add(formConnexion.getPanelPrincipal());
+        //container.add(formInscription.getPanelPrincipal());
+        //container.add(intClient);
         app.setVisible(true);
         
     }

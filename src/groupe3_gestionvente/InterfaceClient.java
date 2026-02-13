@@ -1,4 +1,4 @@
-package InterfaceIHM;
+package groupe3_gestionvente;
 
 import java.awt.*;
 import javax.swing.*;
@@ -12,11 +12,13 @@ import java.util.HashMap;
 import Controllers.*;
 
 /**
- * @author Héloïse 
+ * Interface client moderne - E-commerce
+ * @author Héloïse (Version améliorée)
  */
 public class InterfaceClient extends javax.swing.JPanel {
     ClientController clientCtrl;
     
+    // Couleurs du thème
     private final Color BACKGROUND = new Color(245, 247, 250);
     private final Color CARD_BG = Color.WHITE;
     private final Color PRIMARY_ORANGE = new Color(255, 87, 34);
@@ -29,7 +31,13 @@ public class InterfaceClient extends javax.swing.JPanel {
     private String categorieSelectionnee = null;
 
     public InterfaceClient() {
-        clientCtrl = new ClientController();
+        try {
+            clientCtrl = new ClientController();
+        } catch (Exception e) {
+            System.out.println("ClientController non disponible - Mode démo");
+            clientCtrl = null;
+        }
+        
         chargerPolices();
         initComponents();
         configurerLayout();
@@ -70,7 +78,7 @@ public class InterfaceClient extends javax.swing.JPanel {
      */
     private void configurerLayout() {
         panelPrincipal.setLayout(new BorderLayout(0, 0));
-        
+        panelPrincipal.setBackground(BACKGROUND);
         
         // Header
         panelPrincipal.add(creerHeader(), BorderLayout.NORTH);
@@ -86,7 +94,6 @@ public class InterfaceClient extends javax.swing.JPanel {
         // Panel du contenu principal
         panelContenu.setLayout(new BoxLayout(panelContenu, BoxLayout.Y_AXIS));
         panelContenu.setOpaque(false);
-        panelPrincipal.setBackground(CARD_BG);
         
         JScrollPane scrollPane = new JScrollPane(panelContenu);
         scrollPane.setOpaque(false);
@@ -97,16 +104,19 @@ public class InterfaceClient extends javax.swing.JPanel {
         conteneur.add(scrollPane, BorderLayout.CENTER);
         panelPrincipal.add(conteneur, BorderLayout.CENTER);
     }
-
+    
+    /**
+     * Crée le header moderne
+     */
     private JPanel creerHeader() {
         JPanel header = new JPanel(new BorderLayout(20, 0));
-        //header.setBackground(CARD_BG);
-        header.setOpaque(false);
+        header.setBackground(CARD_BG);
         header.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(230, 230, 230)),
             BorderFactory.createEmptyBorder(15, 30, 15, 30)
         ));
         
+        // Logo à gauche
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         logoPanel.setOpaque(false);
         
@@ -117,6 +127,7 @@ public class InterfaceClient extends javax.swing.JPanel {
                 Image img = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
                 labelLogo = new JLabel(new ImageIcon(img));
             } else {
+                // Logo par défaut si image absente
                 labelLogo = new JLabel("🛍️");
                 labelLogo.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 35));
                 labelLogo.setForeground(PRIMARY_ORANGE);
@@ -141,13 +152,14 @@ public class InterfaceClient extends javax.swing.JPanel {
         return header;
     }
     
-   
+    /**
+     * Crée la barre de recherche moderne
+     */
     private JPanel creerBarreRecherche() {
         JPanel searchContainer = new JPanel();
-        //searchContainer.setLayout(new BoxLayout(searchContainer, BoxLayout.X_AXIS));
-        searchContainer.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        searchContainer.setLayout(new BoxLayout(searchContainer, BoxLayout.X_AXIS));
         searchContainer.setOpaque(false);
-        searchContainer.setMaximumSize(new Dimension(400, 45));
+        searchContainer.setMaximumSize(new Dimension(500, 45));
         searchContainer.setBorder(BorderFactory.createEmptyBorder(0, 100, 0, 100));
         
         JPanel searchBox = new JPanel() {
@@ -157,7 +169,7 @@ public class InterfaceClient extends javax.swing.JPanel {
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
                 g2.setColor(new Color(245, 245, 245));
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 25, 25);
                 
                 g2.dispose();
             }
@@ -178,14 +190,12 @@ public class InterfaceClient extends javax.swing.JPanel {
         searchText.setBorder(null);
         searchText.setOpaque(false);
         searchText.addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (searchText.getText().equals("Search")) {
                     searchText.setText("");
                     searchText.setForeground(TEXT_DARK);
                 }
             }
-            @Override
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (searchText.getText().isEmpty()) {
                     searchText.setText("Search");
@@ -194,9 +204,9 @@ public class InterfaceClient extends javax.swing.JPanel {
             }
         });
         
-        searchBox.add(searchIcon, BorderLayout.EAST);
+        searchBox.add(searchIcon, BorderLayout.WEST);
         searchBox.add(searchText, BorderLayout.CENTER);
-        searchBox.setPreferredSize(new Dimension(400, 40));
+        
         searchContainer.add(Box.createHorizontalGlue());
         searchContainer.add(searchBox);
         searchContainer.add(Box.createHorizontalGlue());
@@ -204,13 +214,18 @@ public class InterfaceClient extends javax.swing.JPanel {
         return searchContainer;
     }
     
-   
+    /**
+     * Crée le panel droit avec les icônes
+     */
     private JPanel creerPanelDroit() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         panel.setOpaque(false);
         
+        // Bouton filtre
+        JButton btnFiltre = creerBoutonIcone("☰", false);
+        
         // Bouton panier avec badge
-        btnPanier = creerBoutonIconeAvecBadge("🛒", "4"); // le 4 represente le nombre de choses dans le panier
+        btnPanier = creerBoutonIconeAvecBadge("🛒", "4");
         btnPanier.addActionListener(evt -> {
             if (clientCtrl != null) {
                 JPanel panelContenuPanier = clientCtrl.showContenuPanier();
@@ -221,10 +236,11 @@ public class InterfaceClient extends javax.swing.JPanel {
             }
         });
         
-        //JButton btnFavoris = creerBoutonIcone("🤍", false);
+        // Bouton favoris
+        JButton btnFavoris = creerBoutonIcone("🤍", false);
         
         // Bouton user avec avatar
-        //btnUser = creerBoutonAvatar();
+        btnUser = creerBoutonAvatar();
         btnUser.addActionListener(evt -> {
             if (clientCtrl != null) {
                 JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(btnUser);
@@ -235,8 +251,9 @@ public class InterfaceClient extends javax.swing.JPanel {
             }
         });
         
+        panel.add(btnFiltre);
         panel.add(btnPanier);
-        //panel.add(btnFavoris);
+        panel.add(btnFavoris);
         panel.add(btnUser);
         
         return panel;
@@ -245,14 +262,8 @@ public class InterfaceClient extends javax.swing.JPanel {
     /**
      * Crée un bouton icône simple
      */
-    private JButton creerBoutonIcone(String path, boolean isToggle) {
-        //charger l'image et le reafficher 
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        
-        
-        JButton btn = new JButton();
-        btn.setIcon(new ImageIcon(img));
+    private JButton creerBoutonIcone(String emoji, boolean isToggle) {
+        JButton btn = new JButton(emoji);
         btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
         btn.setPreferredSize(new Dimension(45, 45));
         btn.setFocusPainted(false);
@@ -302,53 +313,37 @@ public class InterfaceClient extends javax.swing.JPanel {
     /**
      * Crée le bouton avatar utilisateur
      */
-    private JButton creerBoutonAvatar(String path) {
-    // 1. Charger et redimensionner l'image UNE SEULE FOIS en dehors du paint
-    Image imgAvatar;
-    try {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        // On la scale un peu plus petite que le bouton (ex: 28px pour un bouton de 40px)
-        imgAvatar = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
-    } catch (Exception e) {
-        System.err.println("Image introuvable : " + path);
-        imgAvatar = null;
-    }
-
-    JButton btn = new JButton() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            
-            g2.setColor(new Color(255, 200, 180));
-            g2.fillOval(0, 0, getWidth(), getHeight());
-            
-            if (imgAvatar != null) {
-                int x = (getWidth() - 28) / 2;
-                int y = (getHeight() - 28) / 2;
+    private JButton creerBoutonAvatar() {
+        JButton btn = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // On crée une zone de découpe circulaire pour l'image
-                // (Optionnel, au cas où l'image source n'est pas déjà ronde)
-                g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
-                g2.drawImage(imgAvatar, x, y, this);
+                // Cercle de fond
+                g2.setColor(new Color(255, 200, 180));
+                g2.fillOval(2, 2, getWidth() - 4, getHeight() - 4);
+                
+                // Emoji utilisateur
+                g2.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 24));
+                FontMetrics fm = g2.getFontMetrics();
+                String emoji = "👤";
+                int x = (getWidth() - fm.stringWidth(emoji)) / 2;
+                int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+                g2.drawString(emoji, x, y);
+                
+                g2.dispose();
             }
-            
-            g2.dispose();
-        }
-    };
-    
-    // Propriétés du bouton
-    btn.setPreferredSize(new Dimension(40, 40));
-    btn.setMinimumSize(new Dimension(40, 40));
-    btn.setMaximumSize(new Dimension(40, 40));
-    btn.setFocusPainted(false);
-    btn.setBorderPainted(false);
-    btn.setContentAreaFilled(false);
-    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    
-    return btn;
-}
+        };
+        
+        btn.setPreferredSize(new Dimension(40, 40));
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setContentAreaFilled(false);
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        return btn;
+    }
     
     /**
      * Affiche les catégories dans le panel gauche
