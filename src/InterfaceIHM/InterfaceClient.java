@@ -2,22 +2,15 @@ package InterfaceIHM;
 
 import java.awt.*;
 import javax.swing.*;
-import java.awt.geom.*;
 import java.io.InputStream;
-import java.awt.font.TextAttribute;
-import java.util.List;
-import java.util.Map;
-import java.util.Arrays;
-import java.util.HashMap;
 import Controllers.*;
 
 /**
- * @author Héloïse 
+ * @author Héloïse  
  */
 public class InterfaceClient extends javax.swing.JPanel {
-    ClientController clientCtrl;
+    private ClientController clientCtrl;
     
-    private final Color BACKGROUND = new Color(245, 247, 250);
     private final Color CARD_BG = Color.WHITE;
     private final Color PRIMARY_ORANGE = new Color(255, 87, 34);
     private final Color TEXT_DARK = new Color(33, 33, 33);
@@ -28,8 +21,8 @@ public class InterfaceClient extends javax.swing.JPanel {
     private Font bungeeFont;
     private String categorieSelectionnee = null;
 
-    public InterfaceClient() {
-        clientCtrl = new ClientController();
+    public InterfaceClient(ClientController clientCrl) {
+        this.clientCtrl = clientCtrl;
         chargerPolices();
         initComponents();
         configurerLayout();
@@ -38,9 +31,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         afficherCategoriesPopulaires();
     }
     
-    /**
-     * Charge les polices personnalisées
-     */
+    
     private void chargerPolices() {
         try {
             InputStream is = getClass().getResourceAsStream("./ressources/fonts/Roboto.ttf");
@@ -65,9 +56,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         }
     }
     
-    /**
-     * Configure le layout principal
-     */
+    //layoutPrincipal
     private void configurerLayout() {
         panelPrincipal.setLayout(new BorderLayout(0, 0));
         
@@ -100,7 +89,6 @@ public class InterfaceClient extends javax.swing.JPanel {
 
     private JPanel creerHeader() {
         JPanel header = new JPanel(new BorderLayout(20, 0));
-        //header.setBackground(CARD_BG);
         header.setOpaque(false);
         header.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(230, 230, 230)),
@@ -131,8 +119,10 @@ public class InterfaceClient extends javax.swing.JPanel {
         // Barre de recherche au centre
         searchBar = creerBarreRecherche();
         
-        // Icônes à droite (filtre, panier, favoris, user)
         JPanel rightPanel = creerPanelDroit();
+        rightPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
+       
         
         header.add(logoPanel, BorderLayout.WEST);
         header.add(searchBar, BorderLayout.CENTER);
@@ -205,12 +195,22 @@ public class InterfaceClient extends javax.swing.JPanel {
     }
     
    
+    
+    private JLabel creerLabel(String texte, float taille, int style){
+        JLabel label = new JLabel(texte);
+        label.setFont(robotoFont.deriveFont(style, taille));
+        label.setForeground(TEXT_DARK);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        label.setBorder(BorderFactory.createEmptyBorder(0, 10, 8,0));
+        return label;       
+    }
+   
     private JPanel creerPanelDroit() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
         panel.setOpaque(false);
         
         // Bouton panier avec badge
-        btnPanier = creerBoutonIconeAvecBadge("🛒", "4"); // le 4 represente le nombre de choses dans le panier
+        btnPanier = creerBoutonIconeAvecBadge("./ressources/images/panierIcon.png", "4"); // le 4 represente le nombre de choses dans le panier controlleur a créer 
         btnPanier.addActionListener(evt -> {
             if (clientCtrl != null) {
                 JPanel panelContenuPanier = clientCtrl.showContenuPanier();
@@ -221,10 +221,8 @@ public class InterfaceClient extends javax.swing.JPanel {
             }
         });
         
-        //JButton btnFavoris = creerBoutonIcone("🤍", false);
         
-        // Bouton user avec avatar
-        //btnUser = creerBoutonAvatar();
+        btnUser = creerBoutonAvatar("./ressources/images/userIcon.png");
         btnUser.addActionListener(evt -> {
             if (clientCtrl != null) {
                 JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(btnUser);
@@ -235,124 +233,159 @@ public class InterfaceClient extends javax.swing.JPanel {
             }
         });
         
-        panel.add(btnPanier);
-        //panel.add(btnFavoris);
-        panel.add(btnUser);
+        //labels de connection et inscription et espace admin
+        JLabel seConnecter = creerLabel("Se connecter", 14f, Font.BOLD);
+        seConnecter.setForeground(TEXT_LIGHT);
+        seConnecter.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel creerCompte = creerLabel("Créer un compte", 14f, Font.PLAIN);
+        creerCompte.setForeground(TEXT_LIGHT);
+        creerCompte.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        JLabel espaceAdmin = creerLabel("Espace admin", 14f, Font.PLAIN);
+        espaceAdmin.setForeground(PRIMARY_ORANGE);
+        espaceAdmin.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        espaceAdmin.setForeground(PRIMARY_ORANGE);
+        
+        // listerners pour afficher le form de connexion et d'inscription
+        seConnecter.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                afficherFormulaireConnexion();
+
+            }
+        });
+        
+        espaceAdmin.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                afficherFormulaireAdmin();
+
+            }
+        });
+        
+        creerCompte.addMouseListener( new java.awt.event.MouseAdapter(){
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e){
+            afficherFormulaireInscription();
+        }
+        });
+        
+        if(clientCtrl != null){
+            panel.add(btnPanier);
+            panel.add(btnUser);
+        }else{
+            panel.add(creerCompte);
+            panel.add(seConnecter);
+            panel.add(espaceAdmin);
+            
+        }
+        
+        
+            
+         
+        
+        espaceAdmin.addMouseListener(new java.awt.event.MouseAdapter(){
+            public void mouseClicked(java.awt.event.MouseListener e){
+                afficherFormulaireAdmin();
+            }
+            
+        });
         
         return panel;
     }
     
-    /**
-     * Crée un bouton icône simple
-     */
-    private JButton creerBoutonIcone(String path, boolean isToggle) {
-        //charger l'image et le reafficher 
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-        
-        
-        JButton btn = new JButton();
-        btn.setIcon(new ImageIcon(img));
-        btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
-        btn.setPreferredSize(new Dimension(45, 45));
+
+
+    private JButton creerBoutonIconeAvecBadge(String path, String badgeText) {
+        java.net.URL url = getClass().getResource(path);
+        final Image imgBrute = (url != null) ? new ImageIcon(url).getImage() : null;
+
+        if (imgBrute == null) {
+            System.err.println("Icône panier introuvable -> " + path);
+        }
+
+        JButton btn = new JButton() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();           
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                if (imgBrute != null) {
+                    int x = (getWidth() - 25) / 2 - 3;
+                    int y = (getHeight() - 25) / 2;
+                    g2.drawImage(imgBrute, x, y, 25, 25, this); 
+                } else {
+                    g2.drawString("🛒", 10, 25);
+                }
+
+                g2.setColor(new Color(255, 69, 0)); // Un orange plus vif
+                int badgeSize = 18;
+                int badgeX = getWidth() - badgeSize - 2;
+                int badgeY = 2;
+                g2.fillOval(badgeX, badgeY, badgeSize, badgeSize);
+
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Arial", Font.BOLD, 10));
+                FontMetrics fm = g2.getFontMetrics();
+                int textWidth = fm.stringWidth(badgeText);
+                int textX = badgeX + (badgeSize - textWidth) / 2;
+                int textY = badgeY + ((badgeSize - fm.getHeight()) / 2) + fm.getAscent();
+                g2.drawString(badgeText, textX, textY);
+                g2.dispose();
+            }
+        };
+
+        btn.setPreferredSize(new Dimension(50, 45));
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setContentAreaFilled(false);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
         return btn;
-    }
-    
-    /**
-     * Crée un bouton avec badge de notification
-     */
-    private JButton creerBoutonIconeAvecBadge(String emoji, String badgeText) {
+    }        
+// avatar utilisateur 
+    private JButton creerBoutonAvatar(String path) {
+        java.net.URL imgUrl = getClass().getResource(path); 
+        final Image bruteImage = (imgUrl!= null) ? new ImageIcon(imgUrl).getImage(): null; 
+
+        try {
+            java.net.URL imgURL = getClass().getResource(path);
+            if (bruteImage != null) {
+                ImageIcon icon = new ImageIcon(imgURL);
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur chargement avatar: " + e.getMessage());
+        }
+
         JButton btn = new JButton() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                
-                // Badge orange
-                g2.setColor(PRIMARY_ORANGE);
-                g2.fillOval(getWidth() - 18, 2, 16, 16);
-                
-                // Nombre
-                g2.setColor(Color.WHITE);
-                g2.setFont(new Font("Arial", Font.BOLD, 10));
-                FontMetrics fm = g2.getFontMetrics();
-                int textWidth = fm.stringWidth(badgeText);
-                g2.drawString(badgeText, getWidth() - 10 - textWidth/2, 13);
-                
+
+                g2.setColor(new Color(255, 200, 180));
+                //g2.fillOval(0, 0, getWidth(), getHeight());
+
+                if (bruteImage != null) {
+                    int x = (getWidth() - 28) / 2 -2;
+                    //int y = (getHeight() - 28) / 2;
+                    //int x = 4;
+                    int y = 2;
+                    g2.drawImage(bruteImage, x, y, this);
+                }
                 g2.dispose();
             }
         };
-        
-        btn.setText(emoji);
-        btn.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
-        btn.setPreferredSize(new Dimension(45, 45));
-        btn.setFocusPainted(false);
-        btn.setBorderPainted(false);
+
+        btn.setPreferredSize(new Dimension(30, 30));
         btn.setContentAreaFilled(false);
-        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
+        btn.setBorderPainted(false);
+
         return btn;
     }
-    
-    /**
-     * Crée le bouton avatar utilisateur
-     */
-    private JButton creerBoutonAvatar(String path) {
-    // 1. Charger et redimensionner l'image UNE SEULE FOIS en dehors du paint
-    Image imgAvatar;
-    try {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        // On la scale un peu plus petite que le bouton (ex: 28px pour un bouton de 40px)
-        imgAvatar = icon.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH);
-    } catch (Exception e) {
-        System.err.println("Image introuvable : " + path);
-        imgAvatar = null;
-    }
 
-    JButton btn = new JButton() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            
-            g2.setColor(new Color(255, 200, 180));
-            g2.fillOval(0, 0, getWidth(), getHeight());
-            
-            if (imgAvatar != null) {
-                int x = (getWidth() - 28) / 2;
-                int y = (getHeight() - 28) / 2;
-                
-                // On crée une zone de découpe circulaire pour l'image
-                // (Optionnel, au cas où l'image source n'est pas déjà ronde)
-                g2.setClip(new Ellipse2D.Float(0, 0, getWidth(), getHeight()));
-                g2.drawImage(imgAvatar, x, y, this);
-            }
-            
-            g2.dispose();
-        }
-    };
-    
-    // Propriétés du bouton
-    btn.setPreferredSize(new Dimension(40, 40));
-    btn.setMinimumSize(new Dimension(40, 40));
-    btn.setMaximumSize(new Dimension(40, 40));
-    btn.setFocusPainted(false);
-    btn.setBorderPainted(false);
-    btn.setContentAreaFilled(false);
-    btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    
-    return btn;
-}
-    
-    /**
-     * Affiche les catégories dans le panel gauche
-     */
+    //le nom des categories dans le panel de gauche 
     private void afficherCategoriesModernes() {
         panelCategorie.setLayout(new BoxLayout(panelCategorie, BoxLayout.Y_AXIS));
         panelCategorie.setOpaque(false);
@@ -367,7 +400,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         titre.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         panelCategorie.add(titre);
         
-        // Liste des catégories
+        // Liste des catégories on appellera le controleur qui renvoie la liste des catégories 
         String[] categories = {
             "Electronics", "Computers", "Clothes", "Arts & Crafts",
             "Toys & Games", "Jewelry", "Beauty & Care", "Mother & Kids",
@@ -379,9 +412,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         }
     }
     
-    /**
-     * Crée un bouton de catégorie
-     */
+    // le nom d'un catégorie sous forme de boutton 
     private JButton creerBoutonCategorie(String nom) {
         JButton btn = new JButton(nom) {
             private boolean isHovered = false;
@@ -420,10 +451,12 @@ public class InterfaceClient extends javax.swing.JPanel {
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn.setForeground(TEXT_DARK);
                 btn.repaint();
             }
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (!nom.equals(categorieSelectionnee)) {
                     btn.setForeground(TEXT_LIGHT);
@@ -440,9 +473,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         return btn;
     }
     
-    /**
-     * Affiche la section promotionnelle (BIG SALE uniquement)
-     */
+
     private void afficherSectionPromotion() {
         JPanel promoSection = new JPanel();
         promoSection.setLayout(new BoxLayout(promoSection, BoxLayout.X_AXIS));
@@ -460,9 +491,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         panelContenu.add(promoSection);
     }
     
-    /**
-     * Crée la carte BIG SALE
-     */
+    //la grande bannierer de promotion 
     private JPanel creerCarteBigSale() {
         JPanel carte = new JPanel() {
             @Override
@@ -491,16 +520,16 @@ public class InterfaceClient extends javax.swing.JPanel {
         textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
         textPanel.setOpaque(false);
         
-        JLabel bigSale = new JLabel("BIG SALE!");
+        JLabel bigSale = new JLabel("Promotion !");
         bigSale.setFont(bungeeFont.deriveFont(Font.BOLD, 32f));
         bigSale.setForeground(TEXT_DARK);
         
-        JLabel subtitle = new JLabel("<html>Wireless headphones<br>with noise canceling</html>");
+        JLabel subtitle = new JLabel("<html>Casques sans fils</html>");
         subtitle.setFont(robotoFont.deriveFont(Font.PLAIN, 13f));
         subtitle.setForeground(TEXT_LIGHT);
         subtitle.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
         
-        JButton btnHeadphones = creerBoutonOrange("Headphones");
+        JButton btnHeadphones = creerBoutonOrange("Casques");
         
         textPanel.add(bigSale);
         textPanel.add(subtitle);
@@ -529,9 +558,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         return carte;
     }
     
-    /**
-     * Affiche les catégories populaires
-     */
+    //les catégories populaires
     private void afficherCategoriesPopulaires() {
         JPanel section = new JPanel();
         section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
@@ -543,11 +570,11 @@ public class InterfaceClient extends javax.swing.JPanel {
         header.setOpaque(false);
         header.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
         
-        JLabel titre = new JLabel("Explore popular categories");
+        JLabel titre = new JLabel("Nos articles ");
         titre.setFont(robotoFont.deriveFont(Font.BOLD, 20f));
         titre.setForeground(TEXT_DARK);
         
-        JLabel seeAll = new JLabel("See all →");
+        JLabel seeAll = new JLabel("Voir tout ->");
         seeAll.setFont(robotoFont.deriveFont(Font.PLAIN, 14f));
         seeAll.setForeground(TEXT_LIGHT);
         seeAll.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -576,9 +603,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         panelContenu.add(section);
     }
     
-    /**
-     * Crée une carte de catégorie
-     */
+    //creer Crte categorie
     private JPanel creerCategorieCard(String nom, String imagePath, Color bgColor) {
         JPanel carte = new JPanel() {
             @Override
@@ -632,9 +657,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         return carte;
     }
     
-    /**
-     * Retourne un emoji pour une catégorie
-     */
+    // retourne un emoji mais je vais modifier ca pour que cela prenne l'url d'image et retourne les image 
     private String getEmojiForCategory(String nom) {
         if (nom.contains("Furniture")) return "🪑";
         if (nom.contains("controller")) return "🎮";
@@ -678,9 +701,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         return btn;
     }
     
-    /**
-     * Crée un bouton noir
-     */
+    //btn noir 
     private JButton creerBoutonNoir(String texte) {
         JButton btn = new JButton(texte) {
             @Override
@@ -713,6 +734,74 @@ public class InterfaceClient extends javax.swing.JPanel {
         return btn;
     }
     
+    private void afficherFormulaireConnexion() {
+        // ova afficher le formualaire dans une fenetre de dialogue
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
+        FormulaireConnexion formPanel = new FormulaireConnexion();
+
+
+
+    // Vous pouvez créer une interface de rappel (callback) ou simplement vérifier une condition
+    /*
+    formPanel.getBtnValider().addActionListener(e -> {
+        // Logique de validation effectuée dans le panel...
+        // Si la connexion est réussie, on ferme :
+        // dialog.dispose();
+    }); */
+
+    // 4. Configuration finale du dialogue
+    dialog.getContentPane().add(formPanel.getPanelPrincipal());
+    dialog.setResizable(false);
+    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true); 
+    }
+    private void afficherFormulaireAdmin() {
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) parentWindow, "Accéder à l'espace admin", true);
+        AdminForm formPanel = new AdminForm();
+
+
+
+    /*
+    formPanel.getBtnValider().addActionListener(e -> {
+        // Logique de validation effectuée dans le panel...
+        // Si la connexion est réussie, on ferme :
+        // dialog.dispose();
+    }); */
+
+    // 4. Configuration finale du dialogue
+    dialog.getContentPane().add(formPanel.getPanelPrincipal());
+    dialog.setResizable(false);
+    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+    dialog.setLocationRelativeTo(this);
+    dialog.setVisible(true); 
+    }
+    
+    private void afficherFormulaireInscription() {
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
+        FormulaireInscription formPanel = new FormulaireInscription();
+
+
+
+        /*
+        formPanel.getBtnValider().addActionListener(e -> {
+            // Logique de validation effectuée dans le panel...
+            // Si la connexion est réussie, on ferme :
+            // dialog.dispose();
+        }); */
+
+        // 4. Configuration finale du dialogue
+        dialog.getContentPane().add(formPanel.getPanelPrincipal());
+        dialog.setResizable(false);
+        dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true); 
+    }
+
+    
     private void initComponents() {
         panelPrincipal = new JPanel();
         panelCategorie = new JPanel();
@@ -723,7 +812,6 @@ public class InterfaceClient extends javax.swing.JPanel {
         btnUser = new JButton();
     }
     
-    // Variables
     private JPanel panelPrincipal;
     private JPanel panelCategorie;
     private JPanel panelContenu;
@@ -733,20 +821,9 @@ public class InterfaceClient extends javax.swing.JPanel {
     private JButton btnPanier;
     private JButton btnUser;
     
-    /**
-     * Méthode main pour tester l'interface
-     */
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("E-commerce Client");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1400, 900);
-            frame.setLocationRelativeTo(null);
-            
-            InterfaceClient interfaceClient = new InterfaceClient();
-            frame.add(interfaceClient.panelPrincipal);
-            
-            frame.setVisible(true);
-        });
+    
+    public JPanel getPanelPrincipal(){
+        return panelPrincipal;
     }
+    
 }

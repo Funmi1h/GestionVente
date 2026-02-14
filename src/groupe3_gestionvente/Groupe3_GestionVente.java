@@ -4,24 +4,24 @@
  */
 package groupe3_gestionvente;
 
-<<<<<<< HEAD
+
 import DAO.*;
 import Metier.*;
 import Modeles.*;
 import java.sql.Connection;
 import java.util.*;
-=======
+
 import InterfaceIHM.MainFrame;
 import InterfaceIHM.InterfaceClient;
-<<<<<<< HEAD
-import InterfaceIHM.FormInscription;
+
+import InterfaceIHM.FormulaireInscription;
 import InterfaceIHM.FormulaireConnexion;
 import InterfaceIHM.AdminForm;
 import javax.swing.*;
-=======
+import Controllers.ClientController;
+
 import InterfaceIHM.FormAddFournisseur;
->>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
->>>>>>> ab788961a93142b796f25746598ae202e4c67d14
+
 
 /**
  *
@@ -34,7 +34,7 @@ public class Groupe3_GestionVente {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-<<<<<<< HEAD
+/*
         //ConnexionDB.connect();
         
         System.out.println("=== Zone de test ===\n");
@@ -56,6 +56,7 @@ public class Groupe3_GestionVente {
         aD.ajouter(a);
         aD.ajouter(a1);
         aD.ajouter(a2);*/
+/*
         ArticleDAO aD = new ArticleDAO(connection);
         
         System.out.println("La liste avant suppression");
@@ -184,23 +185,21 @@ public class Groupe3_GestionVente {
         System.out.println("Chiffre d'affaires: " + stats.get("chiffreAffaires") + " FCFA");
 
 */
-=======
         MainFrame app = new MainFrame();
         JPanel container = app.getContainer();
+        ClientController ctrl = null;
         
-        
-        InterfaceClient intClient = new InterfaceClient();
-        FormInscription formInscription = new FormInscription();
+        InterfaceClient intClient = new InterfaceClient(ctrl);
         FormulaireConnexion formConnexion = new FormulaireConnexion();
         AdminForm formAdmin = new AdminForm();
         
-        container.add(formAdmin.getPanelPrincipal());
+        //container.add(formAdmin.getPanelPrincipal());
         
         //container.add(formConnexion.getPanelPrincipal());
         //container.add(formInscription.getPanelPrincipal());
-        //container.add(intClient);
+        container.add(intClient.getPanelPrincipal());
         app.setVisible(true);
->>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
+
         
     }
     

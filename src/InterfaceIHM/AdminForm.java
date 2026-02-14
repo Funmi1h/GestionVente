@@ -83,8 +83,8 @@ public class AdminForm extends JPanel{
         icone.setPreferredSize(new Dimension(20, 20));
         icone.setForeground(TEXT_LIGHT);
         
-        if (type.equals("telephone")) {
-            icone.setText("📱");
+        if (type.equals("email")) {
+            icone.setText("✉️");
         } else if (type.equals("password")) {
             icone.setText("🔒");
         }
@@ -240,8 +240,33 @@ public class AdminForm extends JPanel{
         
         return panelLeft;
     }
-        
-        
+    
+    
+    
+        private void afficherFormulaireInscription() {
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
+        FormulaireInscription formPanel = new FormulaireInscription();
+
+
+
+        /*
+        formPanel.getBtnValider().addActionListener(e -> {
+            // Logique de validation effectuée dans le panel...
+            // Si la connexion est réussie, on ferme :
+            // dialog.dispose();
+        }); */
+
+        // 4. Configuration finale du dialogue
+        dialog.getContentPane().add(formPanel.getPanelPrincipal());
+        dialog.setResizable(false);
+        dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true); 
+    }
+
+    
+    
     private JPanel creerPanneauDroit() {
         JPanel panelRight = new JPanel();
         panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
@@ -253,15 +278,6 @@ public class AdminForm extends JPanel{
         header.setAlignmentX(Component.LEFT_ALIGNMENT);
         header.setMaximumSize(new Dimension(500, 40));
         
-        JLabel seConnecter = creerLabel("Se connecter", 14f, Font.BOLD);
-        seConnecter.setForeground(TEXT_LIGHT);
-        seConnecter.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JLabel creerCompte = creerLabel("Créer un compte", 14f, Font.PLAIN);
-        creerCompte.setForeground(ORANGE_PRIMARY);
-        
-        header.add(seConnecter);
-        header.add(creerCompte);
-        
         JLabel titrePrincipal = creerLabel("Bon Retour", 28f, Font.BOLD);
         titrePrincipal.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
         
@@ -272,8 +288,8 @@ public class AdminForm extends JPanel{
         sousTitre.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
         
         champEmail = new JTextField(20);
-        JPanel champEm = creerChampAvecIcone("06 12 34 56 78", "telephone", champEmail);
-        JPanel groupeEmail = creerGroupe("Numéro de téléphone", champEm);
+        JPanel champEm = creerChampAvecIcone("adresse@gmail.com", "email", champEmail);
+        JPanel groupeEmail = creerGroupe("Adresse Email", champEm);
         
         champMotDePasse = new JPasswordField(20);
         JPanel champMdp = creerChampAvecIcone("••••••••", "password", champMotDePasse);
@@ -302,6 +318,12 @@ public class AdminForm extends JPanel{
         textLink.setFont(robotoFont.deriveFont(Font.BOLD, 12f));
         textLink.setForeground(ORANGE_PRIMARY);
         textLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        textLink.addMouseListener( new java.awt.event.MouseAdapter(){
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e){
+            afficherFormulaireInscription();
+        }
+        });
         
         bottomText.add(textNormal);
         bottomText.add(textLink);

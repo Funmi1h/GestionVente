@@ -16,7 +16,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 
-public class FormulaireConnexion extends JPanel {
+public class FormulaireInscription extends JPanel {
     private JPanel panelPrincipal;
     private Font robotoFont;
     private final Color ORANGE_PRIMARY = new Color(253, 94, 9);
@@ -26,6 +26,12 @@ public class FormulaireConnexion extends JPanel {
     
     private JTextField champEmail;
     private JPasswordField champMotDePasse;
+    private JPasswordField champMotDePasseConfirmee;
+    private JTextField champNom;
+    private JTextField champPrenom;
+    private JTextField champAdresse;
+    JButton btnInscription;
+    
     
     
     private Font chargerFontUnique() {
@@ -88,11 +94,14 @@ public class FormulaireConnexion extends JPanel {
         icone.setPreferredSize(new Dimension(20, 20));
         icone.setForeground(TEXT_LIGHT);
         
-        if (type.equals("email")) {
-            icone.setText("✉️");
-        } else if (type.equals("password")) {
-            icone.setText("🔒");
-        }
+        switch (type.toLowerCase()) {
+        case "telephone": icone.setText("📱"); break;
+        case "password":  icone.setText("🔒"); break;
+        case "email":     icone.setText("✉️"); break;
+        case "nom":       
+        case "prenom":    icone.setText("👤"); break;
+        default:          icone.setText("✏️"); break;
+    }
         
         JTextField textField = fieldReference;
         textField.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
@@ -265,108 +274,8 @@ public class FormulaireConnexion extends JPanel {
         return panelLeft;
     }
     
-   
-    private JPanel creerPanneauDroit() {
-        JPanel panelRight = new JPanel();
-        panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
-        panelRight.setOpaque(false);
-        panelRight.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-        
-        JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
-        header.setOpaque(false);
-        header.setAlignmentX(Component.LEFT_ALIGNMENT);
-        header.setMaximumSize(new Dimension(500, 40));
-        
-        JLabel seConnecter = creerLabel("Se connecter", 14f, Font.BOLD);
-        seConnecter.setForeground(ORANGE_PRIMARY);
-        seConnecter.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        
-        
-        JLabel creerCompte = creerLabel("Créer un compte", 14f, Font.PLAIN);
-        creerCompte.setForeground(TEXT_LIGHT);
-        creerCompte.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        creerCompte.addMouseListener( new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e){
-            afficherFormulaireInscription();
-        }
-        });
-        
-        header.add(seConnecter);
-        header.add(creerCompte);
-        
-        JLabel titrePrincipal = creerLabel("Bon Retour", 28f, Font.BOLD);
-        titrePrincipal.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
-        
-        JLabel sousTitre = new JLabel("Remplissez vos identifiants pour accéder à votre compte");
-        sousTitre.setFont(robotoFont.deriveFont(Font.PLAIN, 13f));
-        sousTitre.setForeground(TEXT_LIGHT);
-        sousTitre.setAlignmentX(Component.LEFT_ALIGNMENT);
-        sousTitre.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
-        
-        champEmail = new JTextField(20);
-        JPanel champEm = creerChampAvecIcone("adresse@gmail.com", "email", champEmail);
-        JPanel groupeEmail = creerGroupe("Adresse Email", champEm);
-        
-        champMotDePasse = new JPasswordField(20);
-        JPanel champMdp = creerChampAvecIcone("••••••••", "password", champMotDePasse);
-        JPanel groupeMotDePasse = creerGroupe("Mot de passe", champMdp);
-        
-        JLabel motDePasseOublie = new JLabel("Mot de passe oublié ?");
-        motDePasseOublie.setFont(robotoFont.deriveFont(Font.PLAIN, 12f));
-        motDePasseOublie.setForeground(ORANGE_PRIMARY);
-        motDePasseOublie.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        motDePasseOublie.setAlignmentX(Component.LEFT_ALIGNMENT);
-        motDePasseOublie.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        
-        JButton btnConnexion = creerBoutonPrincipal("Se connecter");
-        
-        JPanel bottomText = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
-        bottomText.setOpaque(false);
-        bottomText.setAlignmentX(Component.LEFT_ALIGNMENT);
-        bottomText.setMaximumSize(new Dimension(500, 30));
-        bottomText.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
-        
-        JLabel textNormal = new JLabel("Vous n'avez pas de compte ?");
-        textNormal.setFont(robotoFont.deriveFont(Font.PLAIN, 12f));
-        textNormal.setForeground(TEXT_LIGHT);
-        
-        JLabel textLink = new JLabel("Inscrivez-vous gratuitement");
-        
-        textLink.setFont(robotoFont.deriveFont(Font.BOLD, 12f));
-        textLink.setForeground(ORANGE_PRIMARY);
-        textLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        textLink.addMouseListener( new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e){
-            afficherFormulaireInscription();
-        }
-        });
-        
-        bottomText.add(textNormal);
-        bottomText.add(textLink);
-        
-        // assemblage
-        panelRight.add(header);
-        panelRight.add(Box.createVerticalStrut(10));
-        panelRight.add(titrePrincipal);
-        panelRight.add(sousTitre);
-        panelRight.add(groupeEmail);
-        panelRight.add(groupeMotDePasse);
-        panelRight.add(motDePasseOublie);
-        panelRight.add(btnConnexion);
-        panelRight.add(bottomText);
-        panelRight.add(Box.createVerticalGlue());
-        
-        return panelRight;
-    }
-   
     
-    
-    
-    private void afficherFormulaireConnexion() {
+        private void afficherFormulaireConnexion() {
         // ova afficher le formualaire dans une fenetre de dialogue
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
@@ -389,55 +298,108 @@ public class FormulaireConnexion extends JPanel {
     dialog.setLocationRelativeTo(this);
     dialog.setVisible(true); 
     }
-    private void afficherFormulaireAdmin() {
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Accéder à l'espace admin", true);
-        AdminForm formPanel = new AdminForm();
 
+    
+   
+    private JPanel creerPanneauDroit() {
+        JPanel panelRight = new JPanel();
+        panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
+        panelRight.setOpaque(false);
+        panelRight.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        
+        JPanel header = new JPanel(new FlowLayout(FlowLayout.CENTER, 30, 0));
+        header.setOpaque(false);
+        header.setAlignmentX(Component.LEFT_ALIGNMENT);
+        header.setMaximumSize(new Dimension(500, 40));
+        
+        JLabel seConnecter = creerLabel("Se connecter", 14f, Font.BOLD);
+        seConnecter.setForeground(TEXT_LIGHT);
+        seConnecter.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        JLabel creerCompte = creerLabel("Créer un compte", 14f, Font.PLAIN);
+        creerCompte.setForeground(ORANGE_PRIMARY);
+        creerCompte.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        seConnecter.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                afficherFormulaireConnexion();
 
+            }
+        });
+        
+        header.add(seConnecter);
+        header.add(creerCompte);
+        
+        JLabel titrePrincipal = creerLabel("Créer votre compte", 28f, Font.BOLD);
+        titrePrincipal.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
 
-    /*
-    formPanel.getBtnValider().addActionListener(e -> {
-        // Logique de validation effectuée dans le panel...
-        // Si la connexion est réussie, on ferme :
-        // dialog.dispose();
-    }); */
-
-    // 4. Configuration finale du dialogue
-    dialog.getContentPane().add(formPanel.getPanelPrincipal());
-    dialog.setResizable(false);
-    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true); 
+        
+        champNom = new JTextField(20);
+        JPanel champN = creerChampAvecIcone("Votre nom", "nom", champNom);
+        JPanel groupeNom = creerGroupe("Nom ", champN);
+        
+        champPrenom = new JTextField(20);
+        JPanel champP = creerChampAvecIcone("Votre prénom", "prenom", champPrenom);
+        JPanel groupePrenom = creerGroupe("Prénom", champP);
+        
+        champMotDePasse = new JPasswordField(20);
+        JPanel champMdp = creerChampAvecIcone("••••••••", "password", champMotDePasse);
+        JPanel groupeMotDePasse = creerGroupe("Mot de passe", champMdp);
+        
+        champMotDePasseConfirmee = new JPasswordField(20);
+        JPanel champMdpConf = creerChampAvecIcone("••••••••", "password", champMotDePasseConfirmee);
+        JPanel groupeMotDePasseConfirmee = creerGroupe("Confirmer le mot de passe", champMdpConf);
+        
+        champEmail = new JTextField(20);
+        JPanel champEm = creerChampAvecIcone("email@gmail.com", "email", champEmail);
+        JPanel groupeEmail = creerGroupe("Adresse email", champEm);
+        
+        champAdresse = new JPasswordField(20);
+        JPanel champAd = creerChampAvecIcone("Votre adresse", "password", champAdresse);
+        JPanel groupeAdresse = creerGroupe("Adresse", champAd);
+        
+        btnInscription = creerBoutonPrincipal("S'inscrire");
+        
+        JPanel bottomText = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        bottomText.setOpaque(false);
+        bottomText.setAlignmentX(Component.LEFT_ALIGNMENT);
+        bottomText.setMaximumSize(new Dimension(500, 30));
+        bottomText.setBorder(BorderFactory.createEmptyBorder(13, 0, 0, 0));
+        
+        JLabel textNormal = new JLabel("Vous avez déja de compte ?");
+        textNormal.setFont(robotoFont.deriveFont(Font.PLAIN, 12f));
+        textNormal.setForeground(TEXT_LIGHT);
+        
+        JLabel textLink = new JLabel("Connectez-vous gratuitement");
+        textLink.setFont(robotoFont.deriveFont(Font.BOLD, 12f));
+        textLink.setForeground(ORANGE_PRIMARY);
+        textLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        textLink.addMouseListener( new java.awt.event.MouseAdapter(){
+        @Override
+        public void mouseClicked(java.awt.event.MouseEvent e){
+            afficherFormulaireConnexion();
+        }
+        });
+        
+        // assemblage
+        panelRight.add(header);
+        panelRight.add(titrePrincipal);
+        panelRight.add(groupeNom);
+        panelRight.add(groupePrenom);
+        panelRight.add(groupeEmail);
+        panelRight.add(groupeAdresse);
+        panelRight.add(groupeMotDePasse);
+        panelRight.add(groupeMotDePasseConfirmee);
+        panelRight.add(btnInscription);
+        panelRight.add(bottomText);
+        panelRight.add(Box.createVerticalGlue());
+        
+        return panelRight;
     }
-    
-    private void afficherFormulaireInscription() {
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
-        FormulaireInscription formPanel = new FormulaireInscription();
-
-
-
-        /*
-        formPanel.getBtnValider().addActionListener(e -> {
-            // Logique de validation effectuée dans le panel...
-            // Si la connexion est réussie, on ferme :
-            // dialog.dispose();
-        }); */
-
-        // 4. Configuration finale du dialogue
-        dialog.getContentPane().add(formPanel.getPanelPrincipal());
-        dialog.setResizable(false);
-        dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-        dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true); 
-    }
-
-    
-    
     
    //constructeur
-    public FormulaireConnexion() {
+    public FormulaireInscription() {
         robotoFont = chargerFontUnique();
         
         panelPrincipal = new JPanel(new GridBagLayout());
@@ -474,14 +436,34 @@ public class FormulaireConnexion extends JPanel {
     }
     
     
-    public String getTelephone() {
-        String email = champEmail.getText();
-        return email.equals("adresse@email.com") ? "" : email;
+    public String getEmail() {
+        String em = champEmail.getText();
+        return em.equals("email@gmail.com") ? "" : em;
     }
     
    
+    public String getNom(){
+        String n = champNom.getText();
+        return n.equals("Votre nom" )? "": n;
+    }
+    
+    public String getPrenom(){
+        String n = champPrenom.getText();
+        return n.equals("Votre prénom" )? "": n;
+    }
+    
+    public String getAdresse(){
+        String n = champAdresse.getText();
+        return n.equals("Votre adresse" )? "": n;
+    }
+    
     public String getMotDePasse() {
-        String mdp = new String(champMotDePasse.getPassword());
+        String mdp = String.valueOf(champMotDePasse.getPassword());
         return mdp.equals("••••••••") ? "" : mdp;
+    }
+    
+    public String getMotDePasseConfirmee(){
+        String mdp = String.valueOf(champMotDePasseConfirmee.getPassword());
+        return mdp.equals("••••••••")? "": mdp;
     }
 }
