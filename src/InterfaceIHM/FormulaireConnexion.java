@@ -26,6 +26,7 @@ public class FormulaireConnexion extends JPanel {
     
     private JTextField champEmail;
     private JPasswordField champMotDePasse;
+    private JButton btnConnexion;
     
     
     private Font chargerFontUnique() {
@@ -320,7 +321,7 @@ public class FormulaireConnexion extends JPanel {
         motDePasseOublie.setAlignmentX(Component.LEFT_ALIGNMENT);
         motDePasseOublie.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         
-        JButton btnConnexion = creerBoutonPrincipal("Se connecter");
+        btnConnexion = creerBoutonPrincipal("Se connecter");
         
         JPanel bottomText = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         bottomText.setOpaque(false);
@@ -362,70 +363,11 @@ public class FormulaireConnexion extends JPanel {
         
         return panelRight;
     }
-   
-    
-    
-    
-    private void afficherFormulaireConnexion() {
-        // ova afficher le formualaire dans une fenetre de dialogue
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
-        FormulaireConnexion formPanel = new FormulaireConnexion();
-
-
-
-    // Vous pouvez créer une interface de rappel (callback) ou simplement vérifier une condition
-    /*
-    formPanel.getBtnValider().addActionListener(e -> {
-        // Logique de validation effectuée dans le panel...
-        // Si la connexion est réussie, on ferme :
-        // dialog.dispose();
-    }); */
-
-    // 4. Configuration finale du dialogue
-    dialog.getContentPane().add(formPanel.getPanelPrincipal());
-    dialog.setResizable(false);
-    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true); 
-    }
-    private void afficherFormulaireAdmin() {
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Accéder à l'espace admin", true);
-        AdminForm formPanel = new AdminForm();
-
-
-
-    /*
-    formPanel.getBtnValider().addActionListener(e -> {
-        // Logique de validation effectuée dans le panel...
-        // Si la connexion est réussie, on ferme :
-        // dialog.dispose();
-    }); */
-
-    // 4. Configuration finale du dialogue
-    dialog.getContentPane().add(formPanel.getPanelPrincipal());
-    dialog.setResizable(false);
-    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true); 
-    }
-    
+       
     private void afficherFormulaireInscription() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
         FormulaireInscription formPanel = new FormulaireInscription();
-
-
-
-        /*
-        formPanel.getBtnValider().addActionListener(e -> {
-            // Logique de validation effectuée dans le panel...
-            // Si la connexion est réussie, on ferme :
-            // dialog.dispose();
-        }); */
-
-        // 4. Configuration finale du dialogue
         dialog.getContentPane().add(formPanel.getPanelPrincipal());
         dialog.setResizable(false);
         dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
@@ -474,7 +416,7 @@ public class FormulaireConnexion extends JPanel {
     }
     
     
-    public String getTelephone() {
+    public String getEmail() {
         String email = champEmail.getText();
         return email.equals("adresse@email.com") ? "" : email;
     }
@@ -483,5 +425,9 @@ public class FormulaireConnexion extends JPanel {
     public String getMotDePasse() {
         String mdp = new String(champMotDePasse.getPassword());
         return mdp.equals("••••••••") ? "" : mdp;
+    }
+    
+    public JButton getBtnConnexion(){
+        return btnConnexion;
     }
 }

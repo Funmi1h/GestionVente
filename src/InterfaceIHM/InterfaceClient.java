@@ -4,12 +4,13 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.InputStream;
 import Controllers.*;
-
+import Metier.Client;
 /**
  * @author Héloïse  
  */
 public class InterfaceClient extends javax.swing.JPanel {
-    private ClientController clientCtrl;
+    private final ClientController clientCtrl = new ClientController();
+    private Client client;
     
     private final Color CARD_BG = Color.WHITE;
     private final Color PRIMARY_ORANGE = new Color(255, 87, 34);
@@ -20,9 +21,11 @@ public class InterfaceClient extends javax.swing.JPanel {
     private Font robotoFont;
     private Font bungeeFont;
     private String categorieSelectionnee = null;
+    
+    
 
-    public InterfaceClient(ClientController clientCrl) {
-        this.clientCtrl = clientCtrl;
+    public InterfaceClient(Client client) {
+        this.client = client;
         chargerPolices();
         initComponents();
         configurerLayout();
@@ -269,7 +272,7 @@ public class InterfaceClient extends javax.swing.JPanel {
         }
         });
         
-        if(clientCtrl != null){
+        if(client != null){
             panel.add(btnPanier);
             panel.add(btnUser);
         }else{
@@ -293,6 +296,40 @@ public class InterfaceClient extends javax.swing.JPanel {
         return panel;
     }
     
+    private JPanel creerPanelDroitStandard(){
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 15, 0));
+        panel.setOpaque(false);
+        
+        // Bouton panier avec badge
+        btnPanier = creerBoutonIconeAvecBadge("./ressources/images/panierIcon.png", "4"); // le 4 represente le nombre de choses dans le panier controlleur a créer 
+        btnPanier.addActionListener(evt -> {
+            if (clientCtrl != null) {
+                JPanel panelContenuPanier = clientCtrl.showContenuPanier();
+                clientCtrl.switchView(panelContenu, panelContenuPanier);
+            } else {
+                JOptionPane.showMessageDialog(this, "Panier - Fonctionnalité à connecter", 
+                                            "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+        
+        btnUser = creerBoutonAvatar("./ressources/images/userIcon.png");
+        btnUser.addActionListener(evt -> {
+            if (clientCtrl != null) {
+                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(btnUser);
+                clientCtrl.showProfilPopup(topFrame, btnUser);
+            } else {
+                JOptionPane.showMessageDialog(this, "Profil utilisateur - Fonctionnalité à connecter", 
+                                            "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+        
+        panel.add(btnPanier);
+        panel.add(btnUser);
+        return panel;
+        
+    }
 
 
     private JButton creerBoutonIconeAvecBadge(String path, String badgeText) {
@@ -739,6 +776,9 @@ public class InterfaceClient extends javax.swing.JPanel {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
         FormulaireConnexion formPanel = new FormulaireConnexion();
+        clientCtrl.connexionController(formPanel);
+        
+
 
 
 
@@ -761,39 +801,18 @@ public class InterfaceClient extends javax.swing.JPanel {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Accéder à l'espace admin", true);
         AdminForm formPanel = new AdminForm();
-
-
-
-    /*
-    formPanel.getBtnValider().addActionListener(e -> {
-        // Logique de validation effectuée dans le panel...
-        // Si la connexion est réussie, on ferme :
-        // dialog.dispose();
-    }); */
-
-    // 4. Configuration finale du dialogue
-    dialog.getContentPane().add(formPanel.getPanelPrincipal());
-    dialog.setResizable(false);
-    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true); 
+        dialog.getContentPane().add(formPanel.getPanelPrincipal());
+        dialog.setResizable(false);
+        dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true); 
     }
     
     private void afficherFormulaireInscription() {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
         FormulaireInscription formPanel = new FormulaireInscription();
-
-
-
-        /*
-        formPanel.getBtnValider().addActionListener(e -> {
-            // Logique de validation effectuée dans le panel...
-            // Si la connexion est réussie, on ferme :
-            // dialog.dispose();
-        }); */
-
-        // 4. Configuration finale du dialogue
+        clientCtrl.inscriptionController(formPanel);
         dialog.getContentPane().add(formPanel.getPanelPrincipal());
         dialog.setResizable(false);
         dialog.pack(); // Ajuste la taille automatiquement selon le JPanel

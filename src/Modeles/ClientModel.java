@@ -10,6 +10,7 @@ package Modeles;
  */
 import Metier.Client;
 import DAO.ClientDAO;
+import DAO.ConnexionDB;
 import java.sql.Connection;
 import java.util.List;
 
@@ -117,6 +118,7 @@ public class ClientModel {
      * Obtenir le nombre total de clients
      */
     public int getNombreTotalClients() {
-        return clientDAO.lists().size();
+        int nbr = clientDAO.lists().size();
+        return nbr;
     }
 }

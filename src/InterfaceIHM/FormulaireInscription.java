@@ -275,7 +275,7 @@ public class FormulaireInscription extends JPanel {
     }
     
     
-        private void afficherFormulaireConnexion() {
+    private void afficherFormulaireConnexion() {
         // ova afficher le formualaire dans une fenetre de dialogue
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
@@ -337,19 +337,19 @@ public class FormulaireInscription extends JPanel {
         
         champNom = new JTextField(20);
         JPanel champN = creerChampAvecIcone("Votre nom", "nom", champNom);
-        JPanel groupeNom = creerGroupe("Nom ", champN);
+        JPanel groupeNom = creerGroupe("Nom *", champN);
         
         champPrenom = new JTextField(20);
         JPanel champP = creerChampAvecIcone("Votre prénom", "prenom", champPrenom);
-        JPanel groupePrenom = creerGroupe("Prénom", champP);
+        JPanel groupePrenom = creerGroupe("Prénom *", champP);
         
         champMotDePasse = new JPasswordField(20);
         JPanel champMdp = creerChampAvecIcone("••••••••", "password", champMotDePasse);
-        JPanel groupeMotDePasse = creerGroupe("Mot de passe", champMdp);
+        JPanel groupeMotDePasse = creerGroupe("Mot de passe *", champMdp);
         
         champMotDePasseConfirmee = new JPasswordField(20);
         JPanel champMdpConf = creerChampAvecIcone("••••••••", "password", champMotDePasseConfirmee);
-        JPanel groupeMotDePasseConfirmee = creerGroupe("Confirmer le mot de passe", champMdpConf);
+        JPanel groupeMotDePasseConfirmee = creerGroupe("Confirmer le mot de passe *", champMdpConf);
         
         champEmail = new JTextField(20);
         JPanel champEm = creerChampAvecIcone("email@gmail.com", "email", champEmail);
@@ -398,7 +398,9 @@ public class FormulaireInscription extends JPanel {
         return panelRight;
     }
     
-   //constructeur
+    
+    
+   //constructeur    
     public FormulaireInscription() {
         robotoFont = chargerFontUnique();
         
@@ -466,4 +468,8 @@ public class FormulaireInscription extends JPanel {
         String mdp = String.valueOf(champMotDePasseConfirmee.getPassword());
         return mdp.equals("••••••••")? "": mdp;
     }
+    public JButton getBtnInscription(){
+        return btnInscription;
+    }
+    
 }
