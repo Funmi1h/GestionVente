@@ -4,17 +4,24 @@
  */
 package groupe3_gestionvente;
 
-<<<<<<< HEAD
+
 import DAO.*;
 import Metier.*;
 import Modeles.*;
 import java.sql.Connection;
 import java.util.*;
-=======
+
 import InterfaceIHM.MainFrame;
 import InterfaceIHM.InterfaceClient;
-import InterfaceIHM.FormAddFournisseur;
->>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
+
+import InterfaceIHM.FormulaireInscription;
+import InterfaceIHM.FormulaireConnexion;
+import InterfaceIHM.AdminForm;
+import javax.swing.*;
+import Controllers.ClientController;
+
+//import InterfaceIHM.FormAddFournisseur;
+
 
 /**
  *
@@ -27,7 +34,7 @@ public class Groupe3_GestionVente {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-<<<<<<< HEAD
+/*
         //ConnexionDB.connect();
         
         System.out.println("=== Zone de test ===\n");
@@ -49,6 +56,7 @@ public class Groupe3_GestionVente {
         aD.ajouter(a);
         aD.ajouter(a1);
         aD.ajouter(a2);*/
+/*
         ArticleDAO aD = new ArticleDAO(connection);
         
         System.out.println("La liste avant suppression");
@@ -177,13 +185,12 @@ public class Groupe3_GestionVente {
         System.out.println("Chiffre d'affaires: " + stats.get("chiffreAffaires") + " FCFA");
 
 */
-=======
         MainFrame app = new MainFrame();
-        InterfaceClient intClient = new InterfaceClient();
-        FormAddFournisseur formFournisseur = new FormAddFournisseur();
-        app.add(formFournisseur.getPanelPrincipal());
+        JPanel container = app.getContainer();        
+        InterfaceClient intClient = new InterfaceClient(null);
+        container.add(intClient.getPanelPrincipal());
         app.setVisible(true);
->>>>>>> 97f146294024804daf191527e295d4f1c54aff6c
+
         
     }
     

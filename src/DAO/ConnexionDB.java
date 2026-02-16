@@ -18,6 +18,8 @@ public class ConnexionDB {
     private static final String  URL = "jdbc:mysql://localhost:3307/gestionvente";
     private static final String  USER = "root";
     private static final String  PASSWORD = "";
+    
+    
     public static Connection connect(){
         
         try{
@@ -28,6 +30,7 @@ public class ConnexionDB {
         }
         catch(ClassNotFoundException e){
             System.out.println(e.getException());
+            
         } catch(SQLException sq){
             System.getLogger(ConnexionDB.class.getName()).log(System.Logger.Level.ALL, sq);
         }
