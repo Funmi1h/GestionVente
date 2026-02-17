@@ -33,14 +33,11 @@ public class UtilisateurDAO {
         
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, email);
-            
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String motDePasseHash = rs.getString("mot_de_passe");
-                    
                     if (verifierMotDePasse(motDePasseClair, motDePasseHash)) {
                         Utilisateur utilisateur = mapResultSetToUtilisateur(rs);
-                        
                         // Mettre à jour la dernière connexion
                         mettreAJourDerniereConnexion(utilisateur.getIdUtilisateur());
                                             // Vérifier le mot de passe (en production: utiliser BCrypt)

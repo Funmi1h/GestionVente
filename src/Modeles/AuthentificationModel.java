@@ -116,6 +116,10 @@ public class AuthentificationModel {
             return false;
         }
     }
+    
+    public boolean clientExist(String email){
+        return clientDAO.;
+    }
 
     public void deconnecter() {
         SessionUtilisateur.getInstance().deconnecter();

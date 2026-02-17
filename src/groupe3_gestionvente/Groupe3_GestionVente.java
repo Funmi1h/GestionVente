@@ -20,7 +20,6 @@ import InterfaceIHM.AdminForm;
 import javax.swing.*;
 import Controllers.ClientController;
 
-//import InterfaceIHM.FormAddFournisseur;
 
 
 /**
@@ -186,8 +185,17 @@ public class Groupe3_GestionVente {
 
 */
         MainFrame app = new MainFrame();
-        JPanel container = app.getContainer();        
-        InterfaceClient intClient = new InterfaceClient(null);
+        JPanel container = app.getContainer();
+        ClientController ctrl = null;
+        
+        InterfaceClient intClient = new InterfaceClient(ctrl);
+        FormulaireConnexion formConnexion = new FormulaireConnexion();
+        AdminForm formAdmin = new AdminForm();
+        
+        //container.add(formAdmin.getPanelPrincipal());
+        
+        //container.add(formConnexion.getPanelPrincipal());
+        //container.add(formInscription.getPanelPrincipal());
         container.add(intClient.getPanelPrincipal());
         app.setVisible(true);
 

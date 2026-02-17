@@ -10,7 +10,6 @@ package Modeles;
  */
 import Metier.Client;
 import DAO.ClientDAO;
-import DAO.ConnexionDB;
 import java.sql.Connection;
 import java.util.List;
 
@@ -87,6 +86,17 @@ public class ClientModel {
         return clientDAO.rechercheClient(idClient);
     }
     
+        /**
+     * Rechercher un client par ID
+     */
+    public Client trouverClientParEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("ID client invalide");
+        }
+        
+        return clientDAO.rechercheClientParMail(email);
+    }
+    
     /**
      * Rechercher des clients par nom
      */
@@ -118,7 +128,6 @@ public class ClientModel {
      * Obtenir le nombre total de clients
      */
     public int getNombreTotalClients() {
-        int nbr = clientDAO.lists().size();
-        return nbr;
+        return clientDAO.lists().size();
     }
 }

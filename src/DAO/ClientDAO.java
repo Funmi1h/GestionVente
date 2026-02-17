@@ -16,7 +16,7 @@ import java.util.List;
  * @author YACOUBOU
  */
 public class ClientDAO {
-    private Connection connection = ConnexionDB.connect();
+    private Connection connection;
     
     public ClientDAO(Connection connection) {
         this.connection = connection;
@@ -131,7 +131,7 @@ public class ClientDAO {
         } catch (SQLException ex) {
             System.getLogger(ClientDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
-        System.out.println("Le client avec id : "+ id_client +" n'existe pas");
+        System.out.println("Le client avec id : "+id_client+" n'existe pas");
         return null;
     }
     public Client rechercheClientParMail(String email_client){

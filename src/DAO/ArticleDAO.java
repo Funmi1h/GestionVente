@@ -26,14 +26,12 @@ public class ArticleDAO {
     }
     public boolean ajouter(Article a){
         String codeSQL="INSERT INTO articles "
-                       +"(nom_article, prix, stock, url_photo, description) "
-                       +"VALUES (?, ?, ?, ?)";
+                       +"(nom_article, prix, stock) "
+                       +"VALUES (?, ?, ?)";
         try(PreparedStatement reqPreparer = connection.prepareStatement(codeSQL)){
             reqPreparer.setString(1, a.getNom());
             reqPreparer.setFloat(2, a.getPrix());
             reqPreparer.setInt(3, a.getStock());
-            reqPreparer.setString(4, a.getUrlPhoto());
-            reqPreparer.setString(5, a.getDescription());
             reqPreparer.execute();
             return true;
         } catch (SQLException ex) {
@@ -41,15 +39,14 @@ public class ArticleDAO {
         }
         return false;
     }
+    
     public boolean modifier(Article a, int id_article){
-        String codeSQL="UPDATE articles SET nom_article=?, prix=?, stock=?, url_photo=?, description=? WHERE id_article=?";
+        String codeSQL="UPDATE articles SET nom_article=?, prix=?, stock=? WHERE id_article=?";
         try(PreparedStatement reqPreparer = connection.prepareStatement(codeSQL)){
             reqPreparer.setString(1, a.getNom());
             reqPreparer.setFloat(2, a.getPrix());
             reqPreparer.setInt(3, a.getStock());
-            reqPreparer.setString(4, a.getUrlPhoto());
-            reqPreparer.setString(5, a.getDescription());
-            reqPreparer.setInt(6, id_article);
+            reqPreparer.setInt(4, id_article);
             reqPreparer.execute();
             return true;
         } catch (SQLException ex) {
@@ -85,7 +82,6 @@ public class ArticleDAO {
                 article.setUrlPhoto(resReq.getString("url_photo"));
                 article.setCreatedAt(resReq.getString(6));
                 article.setUpdatedAt(resReq.getString(7));
-                article.setDescription(resReq.getString("description"));
                 
                 /*System.out.println(resReq.getInt(1));
                 System.out.println(resReq.getString(2));
@@ -115,10 +111,8 @@ public class ArticleDAO {
                 article.setNom(resReq.getString(2));
                 article.setPrix(resReq.getFloat(3));
                 article.setStock(resReq.getInt(4));
-                article.setUrlPhoto(resReq.getString("url_photo"));
-                article.setCreatedAt(resReq.getString(6));
-                article.setUpdatedAt(resReq.getString(7));
-                article.setDescription(resReq.getString("description"));
+                article.setCreatedAt(resReq.getString(5));
+                article.setUpdatedAt(resReq.getString(6));
                 return article;
                 /*System.out.println(resReq.getInt(1));
                 System.out.println(resReq.getString(2));

@@ -12,9 +12,14 @@ package InterfaceIHM;
  */
 
 
+import Controllers.ClientController;
+import Metier.Client;
+import Modeles.AuthentificationModel;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.InputStream;
+import java.util.Arrays;
 
 public class FormulaireInscription extends JPanel {
     private JPanel panelPrincipal;
@@ -25,12 +30,19 @@ public class FormulaireInscription extends JPanel {
     private final Color TEXT_LIGHT = new Color(102, 102, 102);
     
     private JTextField champEmail;
+    private JTextField champTelephone;
     private JPasswordField champMotDePasse;
     private JPasswordField champMotDePasseConfirmee;
     private JTextField champNom;
     private JTextField champPrenom;
     private JTextField champAdresse;
     JButton btnInscription;
+    
+    
+    /*
+    Attributs pour géré l'inscription:
+    */
+    private ClientController client;
     
     
     
@@ -100,6 +112,7 @@ public class FormulaireInscription extends JPanel {
         case "email":     icone.setText("✉️"); break;
         case "nom":       
         case "prenom":    icone.setText("👤"); break;
+        case "adresse":   icone.setText("🏠"); break;
         default:          icone.setText("✏️"); break;
     }
         
@@ -276,20 +289,24 @@ public class FormulaireInscription extends JPanel {
     
     
     private void afficherFormulaireConnexion() {
-        // ova afficher le formualaire dans une fenetre de dialogue
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
-        FormulaireConnexion formPanel = new FormulaireConnexion();
+    // ova afficher le formualaire dans une fenetre de dialogue
+    Window parentWindow = SwingUtilities.getWindowAncestor(this);
+    JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
+    FormulaireConnexion formPanel = new FormulaireConnexion();
 
 
-
-    // Vous pouvez créer une interface de rappel (callback) ou simplement vérifier une condition
-    /*
-    formPanel.getBtnValider().addActionListener(e -> {
-        // Logique de validation effectuée dans le panel...
-        // Si la connexion est réussie, on ferme :
-        // dialog.dispose();
-    }); */
+    // fermer la fenêtre actuelle quand une nouvelle s'ouvre
+    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowOpened(java.awt.event.WindowEvent e) {
+            // Fermer la fenêtre parente (celle d'inscription)
+            if (parentWindow instanceof JDialog) {
+                ((JDialog) parentWindow).dispose();
+            } else if (parentWindow instanceof JFrame) {
+                ((JFrame) parentWindow).dispose();
+            }
+        }
+    });
 
     // 4. Configuration finale du dialogue
     dialog.getContentPane().add(formPanel.getPanelPrincipal());
@@ -322,11 +339,11 @@ public class FormulaireInscription extends JPanel {
         
         seConnecter.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
-            public void mouseClicked(java.awt.event.MouseEvent e){
+            public void mouseClicked(java.awt.event.MouseEvent e) {
                 afficherFormulaireConnexion();
-
             }
         });
+
         
         header.add(seConnecter);
         header.add(creerCompte);
@@ -337,27 +354,31 @@ public class FormulaireInscription extends JPanel {
         
         champNom = new JTextField(20);
         JPanel champN = creerChampAvecIcone("Votre nom", "nom", champNom);
-        JPanel groupeNom = creerGroupe("Nom *", champN);
+        JPanel groupeNom = creerGroupe("Nom ", champN);
         
         champPrenom = new JTextField(20);
         JPanel champP = creerChampAvecIcone("Votre prénom", "prenom", champPrenom);
-        JPanel groupePrenom = creerGroupe("Prénom *", champP);
+        JPanel groupePrenom = creerGroupe("Prénom", champP);
         
         champMotDePasse = new JPasswordField(20);
         JPanel champMdp = creerChampAvecIcone("••••••••", "password", champMotDePasse);
-        JPanel groupeMotDePasse = creerGroupe("Mot de passe *", champMdp);
+        JPanel groupeMotDePasse = creerGroupe("Mot de passe", champMdp);
         
         champMotDePasseConfirmee = new JPasswordField(20);
         JPanel champMdpConf = creerChampAvecIcone("••••••••", "password", champMotDePasseConfirmee);
-        JPanel groupeMotDePasseConfirmee = creerGroupe("Confirmer le mot de passe *", champMdpConf);
+        JPanel groupeMotDePasseConfirmee = creerGroupe("Confirmer le mot de passe", champMdpConf);
         
         champEmail = new JTextField(20);
         JPanel champEm = creerChampAvecIcone("email@gmail.com", "email", champEmail);
         JPanel groupeEmail = creerGroupe("Adresse email", champEm);
         
-        champAdresse = new JPasswordField(20);
-        JPanel champAd = creerChampAvecIcone("Votre adresse", "password", champAdresse);
+        champAdresse = new JTextField(20);
+        JPanel champAd = creerChampAvecIcone("Votre adresse", "adresse", champAdresse);
         JPanel groupeAdresse = creerGroupe("Adresse", champAd);
+        
+        champTelephone = new JTextField(20);
+        JPanel champTel = creerChampAvecIcone("Votre numéro", "telephone", champTelephone);
+        JPanel groupeTel = creerGroupe("Téléphone", champTel);
         
         btnInscription = creerBoutonPrincipal("S'inscrire");
         
@@ -375,12 +396,14 @@ public class FormulaireInscription extends JPanel {
         textLink.setFont(robotoFont.deriveFont(Font.BOLD, 12f));
         textLink.setForeground(ORANGE_PRIMARY);
         textLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        textLink.addMouseListener( new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e){
-            afficherFormulaireConnexion();
-        }
+        textLink.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                afficherFormulaireConnexion();
+            }
         });
+        btnInscription.addActionListener(this::inscription);
+        
         
         // assemblage
         panelRight.add(header);
@@ -388,6 +411,7 @@ public class FormulaireInscription extends JPanel {
         panelRight.add(groupeNom);
         panelRight.add(groupePrenom);
         panelRight.add(groupeEmail);
+        panelRight.add(groupeTel);
         panelRight.add(groupeAdresse);
         panelRight.add(groupeMotDePasse);
         panelRight.add(groupeMotDePasseConfirmee);
@@ -398,12 +422,10 @@ public class FormulaireInscription extends JPanel {
         return panelRight;
     }
     
-    
-    
-   //constructeur    
+   //constructeur
     public FormulaireInscription() {
         robotoFont = chargerFontUnique();
-        
+        client = new ClientController();
         panelPrincipal = new JPanel(new GridBagLayout());
         panelPrincipal.setBackground(BACKGROUND_LIGHT);
         
@@ -449,6 +471,11 @@ public class FormulaireInscription extends JPanel {
         return n.equals("Votre nom" )? "": n;
     }
     
+    public String getTelephone(){
+        String n = champTelephone.getText();
+        return n.equals("Votre numéro" )? "": n;
+    }
+    
     public String getPrenom(){
         String n = champPrenom.getText();
         return n.equals("Votre prénom" )? "": n;
@@ -468,8 +495,115 @@ public class FormulaireInscription extends JPanel {
         String mdp = String.valueOf(champMotDePasseConfirmee.getPassword());
         return mdp.equals("••••••••")? "": mdp;
     }
-    public JButton getBtnInscription(){
-        return btnInscription;
-    }
     
+    private void inscription(ActionEvent e) {
+        /*
+        Inscription d'un client
+        */
+
+        // Récupération des données
+        String nom = this.getNom();
+        String prenom = this.getPrenom();
+        String email = getEmail();
+        String adresse = getAdresse();
+        String tel = getTelephone();
+        String password = getMotDePasse();
+        String passwordC = getMotDePasseConfirmee();
+
+        // Validation des champs obligatoires
+        if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || 
+            adresse.isEmpty() || password.isEmpty() || passwordC.isEmpty() || tel.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                "Tous les champs doivent être remplis",
+                "Erreur de validation",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validation email (simple)
+        if (!email.contains("@") || !email.contains(".")) {
+            JOptionPane.showMessageDialog(this,
+                "Format d'email invalide",
+                "Erreur de validation",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (client.clientExist(email)){
+            JOptionPane.showMessageDialog(this,
+                "L'email est déjà utilisé.",
+                "Échec de l'inscription",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validation mot de passe (minimum 6 caractères)
+        if (password.length() < 6) {
+            JOptionPane.showMessageDialog(this,
+                "Le mot de passe doit contenir au moins 6 caractères",
+                "Erreur de validation",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Vérification correspondance mots de passe
+        if (!password.equals(passwordC)) {
+            JOptionPane.showMessageDialog(this,
+                "Les mots de passe ne correspondent pas",
+                "Erreur de validation",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Initialisation de ClientUtils si nécessaire
+            if (client == null) {
+                client = new ClientController();
+            }
+
+            Client nouveauClient = new Client(nom, prenom, email, tel, adresse);
+
+            // Tentative d'inscription
+            if (client.inscription(nouveauClient, password)) {
+                // Succès
+                JOptionPane.showMessageDialog(this,
+                    "Inscription réussie ! Vous pouvez maintenant vous connecter.",
+                    "Succès",
+                    JOptionPane.INFORMATION_MESSAGE);
+
+                viderChamps();
+
+                afficherFormulaireConnexion();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "L'inscription a échoué.",
+                    "Échec de l'inscription",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,
+                "Erreur lors de l'inscription : " + ex.getMessage(),
+                "Erreur système",
+                JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+
+    // Méthode utilitaire pour vider les champs
+    private void viderChamps() {
+        champNom.setText("Votre nom");
+        champNom.setForeground(TEXT_LIGHT);
+        champPrenom.setText("Votre prénom");
+        champPrenom.setForeground(TEXT_LIGHT);
+        champTelephone.setText("Votre numéro");
+        champTelephone.setForeground(TEXT_LIGHT);
+        champEmail.setText("email@gmail.com");
+        champEmail.setForeground(TEXT_LIGHT);
+        champAdresse.setText("Votre adresse");
+        champAdresse.setForeground(TEXT_LIGHT);
+        champMotDePasse.setText("••••••••");
+        champMotDePasse.setForeground(TEXT_LIGHT);
+        champMotDePasseConfirmee.setText("••••••••");
+        champMotDePasseConfirmee.setForeground(TEXT_LIGHT);
+    }
 }
