@@ -10,7 +10,7 @@ package Metier;
  */
 public class Client {
     private int idClient;
-    private String nom, prenom, email, adresse, dateCreate, dateUpdate, motDePasse;
+    private String nom, prenom, email, telephone, adresse, dateCreate, dateUpdate, motDePasse;
     // Deux constructeurs
     public Client() {
     }
@@ -19,7 +19,7 @@ public class Client {
         this.nom=nom;
         this.prenom=prenom;
         this.email=email;
-        //this.telephone=telephone;
+        this.telephone=telephone;
         this.adresse=adresse;
         this.motDePasse = motDePasse;
     }
@@ -44,6 +44,10 @@ public class Client {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getTelephone() {
+        return telephone;
     }
 
     
@@ -77,6 +81,10 @@ public class Client {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     
