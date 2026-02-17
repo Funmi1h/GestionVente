@@ -22,10 +22,11 @@ public class Article {
     }
 
     
-    public Article(String nom, float prix, Integer stock) {
+    public Article(String nom, String description, float prix, int stock) {
         this.nom = nom;
         this.prix = prix;
         this.stock = stock;
+        this.description = description;
     }
 
     public int getId_article() {
