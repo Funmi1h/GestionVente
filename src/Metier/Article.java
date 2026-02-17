@@ -11,6 +11,7 @@ package Metier;
 public class Article {
     private int id_article;
     private String nom;
+    private String description;
     private float prix;
     private int stock;
     private String urlPhoto;
@@ -21,10 +22,11 @@ public class Article {
     }
 
     
-    public Article(String nom, float prix, Integer stock) {
+    public Article(String nom, String description, float prix, int stock) {
         this.nom = nom;
         this.prix = prix;
         this.stock = stock;
+        this.description = description;
     }
 
     public int getId_article() {
@@ -33,6 +35,10 @@ public class Article {
 
     public String getNom() {
         return nom;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public float getPrix() {
@@ -63,6 +69,9 @@ public class Article {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+     public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setPrix(float prix) {
