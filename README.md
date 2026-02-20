@@ -1,6 +1,9 @@
 Comment exécuter le projet?
+
 Réponse:
+
 Installer MySQL
+
 Intaller java (La version 25.0.2 ou plus)
 
 Créer la base de données :
