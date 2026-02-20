@@ -27,7 +27,7 @@ public class ArticleDAO {
     public boolean ajouter(Article a){
         String codeSQL="INSERT INTO articles "
                        +"(nom_article, prix, stock, url_photo, description) "
-                       +"VALUES (?, ?, ?, ?)";
+                       +"VALUES (?, ?, ?, ?, ?)";
         try(PreparedStatement reqPreparer = connection.prepareStatement(codeSQL)){
             reqPreparer.setString(1, a.getNom());
             reqPreparer.setFloat(2, a.getPrix());
@@ -134,6 +134,51 @@ public class ArticleDAO {
             System.getLogger(ClientDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         return null;
+    }
+    public Article rechercheArticleParNom(String nom_article){
+        String codeSQL="SELECT * FROM articles WHERE nom_article=?";
+        try(PreparedStatement reqPreparer = connection.prepareStatement(codeSQL)){
+            reqPreparer.setString(1, nom_article);
+            ResultSet resReq = reqPreparer.executeQuery();
+            if(resReq.next()){
+                Article article = new Article();
+                article.setId_article(resReq.getInt(1));
+                article.setNom(resReq.getString(2));
+                article.setPrix(resReq.getFloat(3));
+                article.setStock(resReq.getInt(4));
+                article.setUrlPhoto(resReq.getString("url_photo"));
+                article.setCreatedAt(resReq.getString(6));
+                article.setUpdatedAt(resReq.getString(7));
+                article.setDescription(resReq.getString("description"));
+                return article;
+                /*System.out.println(resReq.getInt(1));
+                System.out.println(resReq.getString(2));
+                System.out.println(resReq.getString(3));
+                System.out.println(resReq.getString(4));
+                System.out.println(resReq.getString(5));
+                System.out.println(resReq.getString(6));
+                System.out.println(resReq.getString(7));
+                System.out.println(resReq.getString(8));*/
+            }
+            
+        } catch (SQLException ex) {
+            System.getLogger(ClientDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return null;
+    }
+    public boolean estDispo(String nom_article){
+        String codeSQL="SELECT * FROM articles WHERE nom_article=?";
+        try(PreparedStatement reqPreparer = connection.prepareStatement(codeSQL)){
+            reqPreparer.setString(1, nom_article);
+            ResultSet resReq = reqPreparer.executeQuery();
+            if(resReq.next()){
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            System.getLogger(ClientDAO.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        return false;
     }
     public boolean mettreAJourStock(int idArticle, int quantite) {
         String codeSQL = "UPDATE articles SET stock = stock - ? WHERE id_article = ? AND stock >= ?";

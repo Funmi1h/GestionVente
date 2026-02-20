@@ -69,6 +69,12 @@ public class ArticleModel {
         
         return articleDAO.supprime(idArticle);
     }
+    /*
+    Verifier si un article est dispo
+    */
+    public boolean estDejaDansCreer(String nom){
+        return articleDAO.estDispo(nom);
+    }
     
     /**
      * Récupérer tous les articles
@@ -87,7 +93,14 @@ public class ArticleModel {
         
         return articleDAO.rechercheArticle(idArticle);
     }
-    
+    public Article trouverArticleParNom(String nomArticle) {
+        if (nomArticle == "") {
+            throw new IllegalArgumentException("Nom article invalide");
+        }
+        
+        return articleDAO.rechercheArticleParNom(nomArticle);
+    }
+
     /**
      * Rechercher des articles par nom
      */

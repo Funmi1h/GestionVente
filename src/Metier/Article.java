@@ -29,6 +29,15 @@ public class Article {
         this.description = description;
     }
 
+    public Article(String nom, String description, float prix, int stock, String urlPhoto) {
+        this.nom = nom;
+        this.description = description;
+        this.prix = prix;
+        this.stock = stock;
+        this.urlPhoto = urlPhoto;
+    }
+    
+
     public int getId_article() {
         return id_article;
     }

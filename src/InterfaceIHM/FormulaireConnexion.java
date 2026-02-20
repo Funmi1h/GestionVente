@@ -12,6 +12,7 @@ package InterfaceIHM;
  */
 
 
+import Controllers.AdminController;
 import Controllers.ClientController;
 import javax.swing.*;
 import java.awt.*;
@@ -28,13 +29,50 @@ public class FormulaireConnexion extends JPanel {
     
     private JTextField champEmail;
     private JPasswordField champMotDePasse;
-    
-    /*
-    Attributs pour géré la connexion:
-    */
     private ClientController client;
+    private JDialog parentDialog;
+    private boolean estConnec=false;
+
+    public boolean getEstConnec() {
+        return estConnec;
+    }
+
+    public void setEstConnec(boolean estConnec) {
+        this.estConnec = estConnec;
+    }
     
     
+    public FormulaireConnexion(ClientController clientCtrl, JDialog dialog) {
+        this.client = clientCtrl;
+        this.parentDialog = dialog;
+        robotoFont = chargerFontUnique();
+        
+        panelPrincipal = new JPanel(new GridBagLayout());
+        panelPrincipal.setBackground(BACKGROUND_LIGHT);
+        
+        JPanel formContainer = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Color.WHITE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                g2.dispose();
+            }
+        };
+        
+        formContainer.setLayout(new GridLayout(1, 2, 0, 0));
+        formContainer.setOpaque(false);
+        formContainer.setPreferredSize(new Dimension(980, 600));
+        
+        formContainer.add(creerPanneauGauche());
+        formContainer.add(creerPanneauDroit());
+        
+        panelPrincipal.add(formContainer);
+    }
     private Font chargerFontUnique() {
         Font policeParDefaut = new Font("Segoe UI", Font.PLAIN, 14);
         try {
@@ -274,7 +312,6 @@ public class FormulaireConnexion extends JPanel {
     
    
     private JPanel creerPanneauDroit() {
-        client = new ClientController();
         JPanel panelRight = new JPanel();
         panelRight.setLayout(new BoxLayout(panelRight, BoxLayout.Y_AXIS));
         panelRight.setOpaque(false);
@@ -289,16 +326,15 @@ public class FormulaireConnexion extends JPanel {
         seConnecter.setForeground(ORANGE_PRIMARY);
         seConnecter.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        
-        
         JLabel creerCompte = creerLabel("Créer un compte", 14f, Font.PLAIN);
         creerCompte.setForeground(TEXT_LIGHT);
         creerCompte.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        creerCompte.addMouseListener( new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e){
-            afficherFormulaireInscription();
-        }
+        creerCompte.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                fermerDialog();
+                afficherFormulaireInscription();
+            }
         });
         
         header.add(seConnecter);
@@ -341,16 +377,15 @@ public class FormulaireConnexion extends JPanel {
         textNormal.setForeground(TEXT_LIGHT);
         
         JLabel textLink = new JLabel("Inscrivez-vous gratuitement");
-        
         textLink.setFont(robotoFont.deriveFont(Font.BOLD, 12f));
         textLink.setForeground(ORANGE_PRIMARY);
         textLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        textLink.addMouseListener( new java.awt.event.MouseAdapter(){
-        @Override
-        public void mouseClicked(java.awt.event.MouseEvent e){
-            afficherFormulaireInscription();
-        }
+        textLink.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e){
+                fermerDialog();
+                afficherFormulaireInscription();
+            }
         });
         
         btnConnexion.addActionListener(this::connexion);
@@ -358,7 +393,6 @@ public class FormulaireConnexion extends JPanel {
         bottomText.add(textNormal);
         bottomText.add(textLink);
         
-        // assemblage
         panelRight.add(header);
         panelRight.add(Box.createVerticalStrut(10));
         panelRight.add(titrePrincipal);
@@ -372,8 +406,16 @@ public class FormulaireConnexion extends JPanel {
         
         return panelRight;
     }
-   
-    
+    private void fermerDialog() {
+        if (parentDialog != null) {
+            parentDialog.dispose();
+        } else {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window instanceof JDialog) {
+                ((JDialog) window).dispose();
+            }
+        }
+    }
     
     
     private void afficherFormulaireConnexion() {
@@ -422,25 +464,14 @@ public class FormulaireConnexion extends JPanel {
     }
     
     private void afficherFormulaireInscription() {
-        Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        JDialog dialog = new JDialog((Frame) parentWindow, "Créer un compte ", true);
-        FormulaireInscription formPanel = new FormulaireInscription();
-
-
-
-        /*
-        formPanel.getBtnValider().addActionListener(e -> {
-            // Logique de validation effectuée dans le panel...
-            // Si la connexion est réussie, on ferme :
-            // dialog.dispose();
-        }); */
-
-        // 4. Configuration finale du dialogue
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
+            "Créer un compte", true);
+        FormulaireInscription formPanel = new FormulaireInscription(client);
         dialog.getContentPane().add(formPanel.getPanelPrincipal());
         dialog.setResizable(false);
-        dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
+        dialog.pack();
         dialog.setLocationRelativeTo(this);
-        dialog.setVisible(true); 
+        dialog.setVisible(true);
     }
 
     
@@ -482,6 +513,11 @@ public class FormulaireConnexion extends JPanel {
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
     }
+
+    public void setPanelPrincipal(JPanel panelPrincipal) {
+        this.panelPrincipal = panelPrincipal;
+    }
+    
     
     
     public String getEmail() {
@@ -494,27 +530,52 @@ public class FormulaireConnexion extends JPanel {
         String mdp = new String(champMotDePasse.getPassword());
         return mdp.equals("••••••••") ? "" : mdp;
     }
-    private void connexion(ActionEvent e){
-        String email = getEmail();
-        String mdp = getMotDePasse();
-        if(email.isEmpty() || mdp.isEmpty()){
-            JOptionPane.showMessageDialog(this,
-                "Tous les champs doivent être remplis",
-                "Erreur de validation",
-                JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (client.connexion(email, mdp)){
-             JOptionPane.showMessageDialog(this,
-                 "Succès",
-                 "Succès",
-                 JOptionPane.INFORMATION_MESSAGE);
-
-         } else {
-             JOptionPane.showMessageDialog(this,
-                 "Mot de passe ou email invalide  " ,
-                 "Échec de connexion",
-                 JOptionPane.ERROR_MESSAGE);
-         }
+    // Dans FormulaireConnexion.java - méthode connexion()
+private void connexion(ActionEvent e){
+    String email = getEmail();
+    String mdp = getMotDePasse();
+    
+    if(email.isEmpty() || mdp.isEmpty()){
+        JOptionPane.showMessageDialog(this,
+            "Tous les champs doivent être remplis",
+            "Erreur de validation",
+            JOptionPane.WARNING_MESSAGE);
+        return;
     }
+    
+    if (client.connexion(email, mdp)){
+        JOptionPane.showMessageDialog(this, "Connexion réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+
+        JFrame mainFrame = null;
+        if (parentDialog != null) {
+            mainFrame = (JFrame) SwingUtilities.getWindowAncestor(parentDialog.getParent());
+            parentDialog.dispose();
+        }
+
+        if (mainFrame != null) {
+            mainFrame.getContentPane().removeAll();
+
+            if (client.estAdmin()) {
+                // Si admin, afficher l'interface admin
+                AdminController adminCtrl = new AdminController();
+                mainFrame.getContentPane().add(new AdminInterface(adminCtrl).getPanelPrincipal());
+            } else {
+                // Si client, afficher l'interface client
+                InterfaceClient nouvelleInterface = new InterfaceClient(
+                    client, 
+                    client.getPanierController()
+                );
+                mainFrame.getContentPane().add(nouvelleInterface.getPanelPrincipal());
+            }
+
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        }
+    } else {
+        JOptionPane.showMessageDialog(this,
+            "Email ou mot de passe incorrect",
+            "Échec de connexion",
+            JOptionPane.ERROR_MESSAGE);
+    }
+}
 }

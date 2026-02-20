@@ -11,35 +11,36 @@ import java.awt.*;
  *
  * @author Héloïse
  */
-class RoundButton extends JButton {
-    private Color hoverColor = new Color(255, 120, 40);
-    private Color normalColor = new Color(253, 94, 9);
-
+public class RoundButton extends JButton {
     public RoundButton(String text) {
         super(text);
         setContentAreaFilled(false);
         setFocusPainted(false);
         setBorderPainted(false);
-        setForeground(Color.WHITE);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        // Effet Hover
-        addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) { setBackground(hoverColor); }
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) { setBackground(normalColor); }
-        });
-        setBackground(normalColor);
     }
-
+    
     @Override
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(getBackground());
-        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
-        super.paintComponent(g);
+        
+        if (getModel().isPressed()) {
+            g2.setColor(getBackground().darker());
+        } else if (getModel().isRollover()) {
+            g2.setColor(getBackground().brighter());
+        } else {
+            g2.setColor(getBackground());
+        }
+        
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+        
+        g2.setColor(getForeground());
+        g2.setFont(getFont());
+        FontMetrics fm = g2.getFontMetrics();
+        int x = (getWidth() - fm.stringWidth(getText())) / 2;
+        int y = (getHeight() + fm.getAscent() - fm.getDescent()) / 2;
+        g2.drawString(getText(), x, y);
+        
         g2.dispose();
     }
 }

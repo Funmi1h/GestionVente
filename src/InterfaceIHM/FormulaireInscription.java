@@ -38,13 +38,39 @@ public class FormulaireInscription extends JPanel {
     private JTextField champAdresse;
     JButton btnInscription;
     
-    
-    /*
-    Attributs pour géré l'inscription:
-    */
     private ClientController client;
+    private JDialog parentDialog;
     
-    
+    public FormulaireInscription(ClientController clientCtrl) {
+        this.client = clientCtrl;
+        robotoFont = chargerFontUnique();
+        
+        panelPrincipal = new JPanel(new GridBagLayout());
+        panelPrincipal.setBackground(BACKGROUND_LIGHT);
+        
+        JPanel formContainer = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                
+                g2.setColor(Color.WHITE);
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+                
+                g2.dispose();
+            }
+        };
+        
+        formContainer.setLayout(new GridLayout(1, 2, 0, 0));
+        formContainer.setOpaque(false);
+        formContainer.setPreferredSize(new Dimension(980, 600));
+        
+        formContainer.add(creerPanneauGauche());
+        formContainer.add(creerPanneauDroit());
+        
+        panelPrincipal.add(formContainer);
+    }
     
     private Font chargerFontUnique() {
         Font policeParDefaut = new Font("Segoe UI", Font.PLAIN, 14);
@@ -289,33 +315,15 @@ public class FormulaireInscription extends JPanel {
     
     
     private void afficherFormulaireConnexion() {
-    // ova afficher le formualaire dans une fenetre de dialogue
-    Window parentWindow = SwingUtilities.getWindowAncestor(this);
-    JDialog dialog = new JDialog((Frame) parentWindow, "Connexion", true);
-    FormulaireConnexion formPanel = new FormulaireConnexion();
-
-
-    // fermer la fenêtre actuelle quand une nouvelle s'ouvre
-    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-        @Override
-        public void windowOpened(java.awt.event.WindowEvent e) {
-            // Fermer la fenêtre parente (celle d'inscription)
-            if (parentWindow instanceof JDialog) {
-                ((JDialog) parentWindow).dispose();
-            } else if (parentWindow instanceof JFrame) {
-                ((JFrame) parentWindow).dispose();
-            }
-        }
-    });
-
-    // 4. Configuration finale du dialogue
-    dialog.getContentPane().add(formPanel.getPanelPrincipal());
-    dialog.setResizable(false);
-    dialog.pack(); // Ajuste la taille automatiquement selon le JPanel
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true); 
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 
+            "Connexion", true);
+        FormulaireConnexion formPanel = new FormulaireConnexion(client, dialog);
+        dialog.getContentPane().add(formPanel.getPanelPrincipal());
+        dialog.setResizable(false);
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }
-
     
    
     private JPanel creerPanneauDroit() {
@@ -340,17 +348,16 @@ public class FormulaireInscription extends JPanel {
         seConnecter.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
+                fermerDialog();
                 afficherFormulaireConnexion();
             }
         });
-
         
         header.add(seConnecter);
         header.add(creerCompte);
         
         JLabel titrePrincipal = creerLabel("Créer votre compte", 28f, Font.BOLD);
         titrePrincipal.setBorder(BorderFactory.createEmptyBorder(20, 0, 5, 0));
-
         
         champNom = new JTextField(20);
         JPanel champN = creerChampAvecIcone("Votre nom", "nom", champNom);
@@ -388,7 +395,7 @@ public class FormulaireInscription extends JPanel {
         bottomText.setMaximumSize(new Dimension(500, 30));
         bottomText.setBorder(BorderFactory.createEmptyBorder(13, 0, 0, 0));
         
-        JLabel textNormal = new JLabel("Vous avez déja de compte ?");
+        JLabel textNormal = new JLabel("Vous avez déjà un compte ?");
         textNormal.setFont(robotoFont.deriveFont(Font.PLAIN, 12f));
         textNormal.setForeground(TEXT_LIGHT);
         
@@ -399,13 +406,13 @@ public class FormulaireInscription extends JPanel {
         textLink.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
+                fermerDialog();
                 afficherFormulaireConnexion();
             }
         });
+        
         btnInscription.addActionListener(this::inscription);
         
-        
-        // assemblage
         panelRight.add(header);
         panelRight.add(titrePrincipal);
         panelRight.add(groupeNom);
@@ -420,6 +427,17 @@ public class FormulaireInscription extends JPanel {
         panelRight.add(Box.createVerticalGlue());
         
         return panelRight;
+    }
+    
+    private void fermerDialog() {
+        if (parentDialog != null) {
+            parentDialog.dispose();
+        } else {
+            Window window = SwingUtilities.getWindowAncestor(this);
+            if (window instanceof JDialog) {
+                ((JDialog) window).dispose();
+            }
+        }
     }
     
    //constructeur
@@ -497,20 +515,14 @@ public class FormulaireInscription extends JPanel {
     }
     
     private void inscription(ActionEvent e) {
-        /*
-        Inscription d'un client
-        */
-
-        // Récupération des données
-        String nom = this.getNom();
-        String prenom = this.getPrenom();
+        String nom = getNom();
+        String prenom = getPrenom();
         String email = getEmail();
         String adresse = getAdresse();
         String tel = getTelephone();
         String password = getMotDePasse();
         String passwordC = getMotDePasseConfirmee();
 
-        // Validation des champs obligatoires
         if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || 
             adresse.isEmpty() || password.isEmpty() || passwordC.isEmpty() || tel.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -520,7 +532,6 @@ public class FormulaireInscription extends JPanel {
             return;
         }
 
-        // Validation email (simple)
         if (!email.contains("@") || !email.contains(".")) {
             JOptionPane.showMessageDialog(this,
                 "Format d'email invalide",
@@ -529,7 +540,7 @@ public class FormulaireInscription extends JPanel {
             return;
         }
         
-        if (client.clientExist(email)){
+        if (client.clientExist(email)) {
             JOptionPane.showMessageDialog(this,
                 "L'email est déjà utilisé.",
                 "Échec de l'inscription",
@@ -537,7 +548,6 @@ public class FormulaireInscription extends JPanel {
             return;
         }
 
-        // Validation mot de passe (minimum 6 caractères)
         if (password.length() < 6) {
             JOptionPane.showMessageDialog(this,
                 "Le mot de passe doit contenir au moins 6 caractères",
@@ -546,7 +556,6 @@ public class FormulaireInscription extends JPanel {
             return;
         }
 
-        // Vérification correspondance mots de passe
         if (!password.equals(passwordC)) {
             JOptionPane.showMessageDialog(this,
                 "Les mots de passe ne correspondent pas",
@@ -556,23 +565,14 @@ public class FormulaireInscription extends JPanel {
         }
 
         try {
-            // Initialisation de ClientUtils si nécessaire
-            if (client == null) {
-                client = new ClientController();
-            }
-
             Client nouveauClient = new Client(nom, prenom, email, tel, adresse);
 
-            // Tentative d'inscription
             if (client.inscription(nouveauClient, password)) {
-                // Succès
                 JOptionPane.showMessageDialog(this,
                     "Inscription réussie ! Vous pouvez maintenant vous connecter.",
                     "Succès",
                     JOptionPane.INFORMATION_MESSAGE);
-
-                viderChamps();
-
+                fermerDialog();
                 afficherFormulaireConnexion();
             } else {
                 JOptionPane.showMessageDialog(this,
