@@ -767,7 +767,7 @@ private static class ArticleImagePanel extends JPanel {
         stockLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Bouton
-        JButton btnAjouter = creerBoutonNoir("Ajouter au panier");
+        JButton btnAjouter = creerBoutonOrange("Ajouter au panier");
         btnAjouter.setAlignmentX(Component.LEFT_ALIGNMENT);
         btnAjouter.setMaximumSize(new Dimension(160, 38));
         btnAjouter.setPreferredSize(new Dimension(160, 38));
