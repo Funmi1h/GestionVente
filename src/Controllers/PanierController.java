@@ -26,12 +26,14 @@ public class PanierController {
     private ArticleModel articleModel;
     private ClientController clientCtrl;
     private int idClientConnecte;
+    private PanierContent panierContent;
     
     public PanierController(Connection connection, ClientController clientCtrl) {
         this.panierModel = new PanierModel(connection);
         this.commandeModel = new CommandeModel(connection);
         this.articleModel = new ArticleModel(connection);
         this.clientCtrl = clientCtrl;
+        this.panierContent=  new PanierContent(this, clientCtrl);
     }
     
     private boolean isClientConnecte() {
@@ -91,6 +93,13 @@ public class PanierController {
     }
     
     public JPanel showContenuPanier() {
-        return new PanierContent(this, clientCtrl).getPanelPrincipal();
+  
+
+        return panierContent.getPanelPrincipal();
     }
+    public JButton getBtnRetour(){
+        JButton btnRetour = panierContent.getBtnRetour();
+        return btnRetour;
+    }
+   
 }

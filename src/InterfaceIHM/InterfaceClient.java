@@ -286,11 +286,28 @@ public class InterfaceClient extends javax.swing.JPanel {
                 // Bouton panier (visible seulement pour les clients)
                 nbrArt = String.valueOf(panierCtrl.getNombreArticlesDansPanier());
                 btnPanier = creerBoutonIconeAvecBadge("./ressources/images/panierIcon.png", nbrArt);
-                btnPanier.addActionListener(evt -> {
-                    JPanel panelContenuPanier = panierCtrl.showContenuPanier();
-                    clientCtrl.switchView(panelContenu, panelContenuPanier);
-                });
-                panel.add(btnPanier);
+                
+btnPanier.addActionListener(evt -> {
+    JPanel panelContenuPanier = panierCtrl.showContenuPanier();
+    JButton btnRetour = panierCtrl.getBtnRetour();
+
+    // Remplacer TOUT le contenu de panelPrincipal par le panier
+    panelPrincipal.removeAll();
+    panelPrincipal.setLayout(new BorderLayout());
+    panelPrincipal.add(panelContenuPanier, BorderLayout.CENTER);
+    panelPrincipal.revalidate();
+    panelPrincipal.repaint();
+
+    // Au retour, reconstruire toute la vue initiale
+    btnRetour.addActionListener(e -> {
+        panelPrincipal.removeAll();
+        configurerLayout();     // remet header + categories + zone articles
+        chargerCategories();    // recharge les catégories
+        afficherArticlesPopulaires(); // affiche directement les articles
+        panelPrincipal.revalidate();
+        panelPrincipal.repaint();
+    });
+});                panel.add(btnPanier);
             }
 
             // Bouton utilisateur (visible pour tous les connectés)
@@ -383,33 +400,47 @@ public class InterfaceClient extends javax.swing.JPanel {
         return btn;
     }        
 
-   private JButton creerBoutonAvatar(String path) {
-        java.net.URL imgUrl = getClass().getResource(path); 
-        final Image bruteImage = (imgUrl != null) ? new ImageIcon(imgUrl).getImage(): null; 
+ private JButton creerBoutonAvatar(String path) {
+    java.net.URL imgUrl = getClass().getResource(path);
+    final Image bruteImage = (imgUrl != null) ? new ImageIcon(imgUrl).getImage() : null;
 
-        JButton btn = new JButton() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    JButton btn = new JButton() {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                if (bruteImage != null) {
-                    int x = (getWidth() - 28) / 2 -2;
-                    int y = 2;
-                    g2.drawImage(bruteImage, x, y, this);
-                }
-                g2.dispose();
+            int x = 2, y = 2;
+            int w = getWidth() - 4;
+            int h = getHeight() - 4;
+
+            if (bruteImage != null) {
+                // Clipper en cercle
+                g2.setClip(new java.awt.geom.Ellipse2D.Float(x, y, w, h));
+                g2.drawImage(bruteImage, x, y, w, h, this);
+            } else {
+                // Fallback : cercle gris avec une icône par défaut
+                g2.setColor(new Color(200, 200, 200));
+                g2.fillOval(x, y, w, h);
+                g2.setColor(new Color(120, 120, 120));
+                g2.setFont(new Font("Segoe UI", Font.BOLD, h / 2));
+                FontMetrics fm = g2.getFontMetrics();
+                String txt = "?";
+                g2.drawString(txt, x + (w - fm.stringWidth(txt)) / 2, y + (h + fm.getAscent()) / 2 - 2);
             }
-        };
 
-        btn.setPreferredSize(new Dimension(30, 30));
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(false);
+            g2.dispose();
+        }
+    };
 
-        return btn;
-    }
-
+    btn.setPreferredSize(new Dimension(45, 45)); // taille correcte
+    btn.setContentAreaFilled(false);
+    btn.setBorderPainted(false);
+    btn.setFocusPainted(false);
+    return btn;
+}
+   
     private void afficherCategoriesModernes() {
         panelCategorie.removeAll();
         panelCategorie.setLayout(new BoxLayout(panelCategorie, BoxLayout.Y_AXIS));
@@ -902,13 +933,13 @@ private static class ArticleImagePanel extends JPanel {
         
         return btn;
     }
-    private void afficherVueAccueil(){
-        panelContenu.removeAll();
-        afficherSectionPromotion();
-        chargerCategories();
-        panelContenu.revalidate();
-        panelContenu.repaint();
-    }
+    private void afficherVueAccueil() {
+    panelContenu.removeAll();
+    articles = clientCtrl.getTousArticles(); 
+    afficherArticlesPopulaires();            
+    panelContenu.revalidate();
+    panelContenu.repaint();
+}
     
     private void afficherFormulaireConnexion() {
         JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), 

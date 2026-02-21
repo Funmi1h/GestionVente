@@ -197,7 +197,7 @@ public class ClientController {
             return;
         }
         
-        ProfilPopup popup = new ProfilPopup(parent);
+        ProfilPopup popup = new ProfilPopup(parent, this);
         
         // Ajouter les informations du client
         Client client = getClientConnecte();
